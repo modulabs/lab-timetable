@@ -28,13 +28,13 @@
             border-radius: 15px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             overflow: hidden;
-            height: calc(100vh - 20px);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
         .header {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: #F1585C;
             color: white;
             text-align: center;
             padding: 15px;
@@ -42,7 +42,7 @@
         }
 
         .header h1 {
-            font-size: 2rem;
+            font-size: clamp(1.2rem, 2vw, 2rem);
             font-weight: 700;
             margin-bottom: 5px;
         }
@@ -95,7 +95,7 @@
             background: #e0e0e0;
             margin: 0;
             flex: 1;
-            overflow: hidden;
+            font-size: clamp(0.7rem, 1vw, 1rem);
         }
 
         .day-column {
@@ -118,7 +118,9 @@
         .day-content {
             flex: 1;
             padding: 0;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
         }
 
         .lab-item {
@@ -161,7 +163,7 @@
 
         .lab-name {
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: clamp(0.65rem, 1vw, 0.8rem);
             line-height: 1.1;
             margin-bottom: 4px;
             word-break: keep-all;
@@ -173,7 +175,7 @@
         }
 
         .lab-info {
-            font-size: 0.7rem;
+            font-size: clamp(0.55rem, 0.8vw, 0.7rem);
             opacity: 0.8;
             line-height: 1.2;
         }
@@ -249,7 +251,8 @@
             }
             
             .container {
-                height: calc(100vh - 10px);
+                min-height: 100vh;
+                height: auto;
             }
             
             .header {
@@ -271,18 +274,22 @@
             }
             
             .lab-name {
-                font-size: 0.65rem;
+                font-size: clamp(0.55rem, 1.5vw, 0.7rem);
                 -webkit-line-clamp: 3;
             }
             
             .lab-info {
-                font-size: 0.55rem;
+                font-size: clamp(0.45rem, 1vw, 0.6rem);
             }
             
             .legend {
                 gap: 10px;
                 padding: 8px;
                 font-size: 0.8rem;
+            }
+            
+            .schedule-grid {
+                font-size: clamp(0.6rem, 2vw, 0.9rem);
             }
         }
     </style>
