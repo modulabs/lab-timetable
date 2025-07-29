@@ -77,11 +77,11 @@
         }
 
         .legend-gangnam {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%);
         }
 
         .legend-yeoksam {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
         }
 
         .legend-online {
@@ -143,16 +143,16 @@
             transform: translateY(0px);
         }
 
-        /* 강남캠 - 청록색 */
+        /* 강남캠 - 빨간색 계열 */
         .gangnam {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-            color: #0d4f3c;
+            background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%);
+            color: #791111;
         }
 
-        /* 역삼캠 - 주황색 */
+        /* 역삼캠 - 파란색 계열 */
         .yeoksam {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            color: #7d2d0f;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: #004d7a;
         }
 
         /* 온라인 - 보라색 */
@@ -380,84 +380,8 @@
                 
                 const calendarURL = `https://calendar.google.com/calendar/render?${params.toString()}`;
                 
-                // iframe을 사용해서 팝업 없이 캘린더 페이지 열기
-                const modal = document.createElement('div');
-                modal.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0,0,0,0.8);
-                    z-index: 10000;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                `;
-                
-                const iframe = document.createElement('iframe');
-                iframe.src = calendarURL;
-                iframe.style.cssText = `
-                    width: 90%;
-                    height: 90%;
-                    max-width: 1000px;
-                    max-height: 800px;
-                    border: none;
-                    border-radius: 10px;
-                    background: white;
-                `;
-                
-                const closeButton = document.createElement('button');
-                closeButton.textContent = '✕';
-                closeButton.style.cssText = `
-                    position: absolute;
-                    top: 20px;
-                    right: 20px;
-                    background: #ff4757;
-                    color: white;
-                    border: none;
-                    border-radius: 50%;
-                    width: 40px;
-                    height: 40px;
-                    font-size: 20px;
-                    cursor: pointer;
-                    z-index: 10001;
-                `;
-                
-                closeButton.onclick = () => {
-                    document.body.removeChild(modal);
-                };
-                
-                modal.appendChild(iframe);
-                modal.appendChild(closeButton);
-                document.body.appendChild(modal);
-                
-                // 성공 메시지
-                setTimeout(() => {
-                    const successMsg = document.createElement('div');
-                    successMsg.textContent = `${labName}이 구글 캘린더에 추가되었습니다! 🎉`;
-                    successMsg.style.cssText = `
-                        position: fixed;
-                        top: 20px;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        background: #2ed573;
-                        color: white;
-                        padding: 15px 25px;
-                        border-radius: 25px;
-                        z-index: 10002;
-                        font-weight: bold;
-                        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-                    `;
-                    
-                    modal.appendChild(successMsg);
-                    
-                    setTimeout(() => {
-                        if (successMsg.parentNode) {
-                            successMsg.parentNode.removeChild(successMsg);
-                        }
-                    }, 3000);
-                }, 1000);
+                // 새 탭에서 구글 캘린더 열기
+                window.open(calendarURL, '_blank');
                 
             } catch (error) {
                 console.error('캘린더 추가 중 오류:', error);
@@ -489,30 +413,7 @@
             
             const dayInEnglish = getDayInEnglish(dayHeader);
             
-            // 로딩 표시
-            const loadingDiv = document.createElement('div');
-            loadingDiv.textContent = '캘린더에 추가 중...';
-            loadingDiv.style.cssText = `
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: #3742fa;
-                color: white;
-                padding: 15px 25px;
-                border-radius: 25px;
-                z-index: 10000;
-                font-weight: bold;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            `;
-            document.body.appendChild(loadingDiv);
-            
-            setTimeout(() => {
-                if (loadingDiv.parentNode) {
-                    loadingDiv.parentNode.removeChild(loadingDiv);
-                }
-                addToGoogleCalendar(labName, location, time, dayInEnglish);
-            }, 500);
+            addToGoogleCalendar(labName, location, time, dayInEnglish);
         }
 
         // 페이지 로드 후 이벤트 리스너 추가
