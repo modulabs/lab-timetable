@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모두의연구소 2025년 8월 LAB 시간표</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1px;
+            background: #e0e0e0;
+            margin: 0;
+        }
+
+        .day-column {
+            background: white;
+            min-height: 600px;
+        }
+
+        .day-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .lab-item {
+            margin: 8px;
+            border-radius: 12px;
+            padding: 12px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .lab-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .lab-item:active {
+            transform: translateY(0px);
+        }
+
+        .calendar-icon {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 16px;
+            height: 16px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #333;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lab-item:hover .calendar-icon {
+            opacity: 1;
+        }
+
+        /* 강남캠 - 청록색 */
+        .gangnam {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: #0d4f3c;
+        }
+
+        /* 역삼캠 - 주황색 */
+        .yeoksam {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #7d2d0f;
+        }
+
+        /* 온라인 - 보라색 */
+        .online {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #4a148c;
+        }
+
+        .lab-name {
+            font-weight: 700;
+            font-size: 1rem;
+            line-height: 1.2;
+            margin-bottom: 6px;
+            word-break: keep-all;
+            hyphens: auto;
+        }
+
+        .lab-info {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            line-height: 1.3;
+        }
+
+        .room-number {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .legend-gangnam {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .legend-yeoksam {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .legend-online {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        @media (max-width: 1200px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .lab-name {
+                font-size: 0.9rem;
+            }
+            
+            .lab-info {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .day-header {
+                padding: 10px;
+                font-size: 1.1rem;
+            }
+            
+            .lab-item {
+                margin: 6px;
+                padding: 10px;
+            }
+            
+            .lab-name {
+                font-size: 0.85rem;
+            }
+            
+            .lab-info {
+                font-size: 0.75rem;
+            }
+            
+            .legend {
+                gap: 15px;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .schedule-grid {
+                grid-template-columns: repeat(6, minmax(0, 1fr));
+            }
+            
+            .lab-name {
+                font-size: 0.8rem;
+                line-height: 1.1;
+            }
+            
+            .lab-info {
+                font-size: 0.7rem;
+            }
+            
+            .room-number {
+                font-size: 0.6rem;
+                padding: 1px 4px;
+            }
+        }
+    </style>
+    <script>
+        // 요일을 영어로 변환하는 함수
+        function getDayInEnglish(koreanDay) {
+            const dayMap = {
+                '월': 'Monday',
+                '화': 'Tuesday', 
+                '수': 'Wednesday',
+                '목': 'Thursday',
+                '토': 'Saturday'
+            };
+            return dayMap[koreanDay] || 'Monday';
+        }
+
+        // 2025년 8월의 해당 요일 날짜들을 구하는 함수
+        function getDatesByDay(dayName) {
+            const dates = [];
+            const year = 2025;
+            const month = 7; // JavaScript에서 8월은 7 (0부터 시작)
+            
+            // 8월 1일부터 31일까지 확인
+            for (let day = 1; day <= 31; day++) {
+                const date = new Date(year, month, day);
+                const dayOfWeek = date.getDay();
+                
+                // 요일 매칭 (일요일=0, 월요일=1, ..., 토요일=6)
+                const targetDay = {
+                    'Monday': 1,
+                    'Tuesday': 2,
+                    'Wednesday': 3,
+                    'Thursday': 4,
+                    'Saturday': 6
+                }[dayName];
+                
+                if (dayOfWeek === targetDay) {
+                    dates.push(date);
+                }
+            }
+            return dates;
+        }
+
+        // 구글 캘린더 URL 생성 함수
+        function createGoogleCalendarURL(labName, location, time, dayName) {
+            try {
+                const dates = getDatesByDay(dayName);
+                if (dates.length === 0) return null;
+                
+                // 첫 번째 해당 요일을 기본으로 사용
+                const eventDate = dates[0];
+                
+                // 시간 파싱 (HH:MM 형태)
+                const timeParts = time.split(':');
+                if (timeParts.length !== 2) return null;
+                
+                const hours = parseInt(timeParts[0], 10);
+                const minutes = parseInt(timeParts[1], 10);
+                
+                if (isNaN(hours) || isNaN(minutes)) return null;
+                
+                // 시작 시간 설정 (한국 시간 기준)
+                const startDate = new Date(eventDate);
+                startDate.setHours(hours, minutes, 0);
+                
+                // 종료 시간 설정 (2시간 후로 기본 설정)
+                const endDate = new Date(startDate);
+                endDate.setHours(hours + 2, minutes, 0);
+                
+                // ISO 형태로 변환 (로컬 시간대 유지)
+                const formatDate = (date) => {
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const hour = String(date.getHours()).padStart(2, '0');
+                    const min = String(date.getMinutes()).padStart(2, '0');
+                    const sec = String(date.getSeconds()).padStart(2, '0');
+                    return `${year}${month}${day}T${hour}${min}${sec}`;
+                };
+                
+                const startDateStr = formatDate(startDate);
+                const endDateStr = formatDate(endDate);
+                
+                // 구글 캘린더 URL 매개변수
+                const params = new URLSearchParams({
+                    action: 'TEMPLATE',
+                    text: labName,
+                    dates: `${startDateStr}/${endDateStr}`,
+                    details: `모두의연구소 ${labName}\\n장소: ${location}\\n시간: ${time}`,
+                    location: location === '온라인' ? '온라인' : `모두의연구소 ${location}`,
+                    recur: 'RRULE:FREQ=WEEKLY;COUNT=4' // 4주간 반복
+                });
+                
+                return `https://calendar.google.com/calendar/render?${params.toString()}`;
+            } catch (error) {
+                console.error('캘린더 URL 생성 중 오류:', error);
+                return null;
+            }
+        }
+
+        // LAB 아이템 클릭 이벤트 처리
+        function handleLabClick(element) {
+            const labName = element.querySelector('.lab-name').textContent.trim();
+            const labInfoElement = element.querySelector('.lab-info');
+            const dayHeader = element.closest('.day-column').querySelector('.day-header').textContent.trim();
+            
+            if (!labInfoElement) {
+                alert('LAB 정보를 찾을 수 없습니다.');
+                return;
+            }
+            
+            // HTML에서 <br> 태그로 구분된 정보를 파싱
+            const labInfoHTML = labInfoElement.innerHTML;
+            const parts = labInfoHTML.split('<br>');
+            
+            if (parts.length < 2) {
+                alert('시간 정보를 찾을 수 없습니다.');
+                return;
+            }
+            
+            const location = parts[0].trim();
+            const time = parts[1].trim();
+            
+            // 시간 형식 검증 (HH:MM)
+            if (!time || !time.includes(':')) {
+                alert('올바른 시간 형식이 아닙니다.');
+                return;
+            }
+            
+            const dayInEnglish = getDayInEnglish(dayHeader);
+            const calendarURL = createGoogleCalendarURL(labName, location, time, dayInEnglish);
+            
+            if (calendarURL) {
+                // 새 창으로 구글 캘린더 열기
+                window.open(calendarURL, '_blank');
+            } else {
+                alert('캘린더 URL을 생성할 수 없습니다.');
+            }
+        }
+
+        // 페이지 로드 후 이벤트 리스너 추가
+        document.addEventListener('DOMContentLoaded', function() {
+            const labItems = document.querySelectorAll('.lab-item');
+            labItems.forEach(item => {
+                // 캘린더 아이콘 추가
+                const calendarIcon = document.createElement('div');
+                calendarIcon.className = 'calendar-icon';
+                calendarIcon.textContent = '📅';
+                item.appendChild(calendarIcon);
+                
+                item.addEventListener('click', function() {
+                    handleLabClick(this);
+                });
+                
+                // 접근성을 위한 키보드 이벤트
+                item.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleLabClick(this);
+                    }
+                });
+                
+                // 포커스 가능하도록 설정
+                item.setAttribute('tabindex', '0');
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>모두의연구소</h1>
+            <p>2025년 8월 LAB 시간표</p>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color legend-gangnam"></div>
+                <span>강남캠퍼스</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-yeoksam"></div>
+                <span>역삼캠퍼스</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-online"></div>
+                <span>온라인</span>
+            </div>
+            <div class="legend-item" style="margin-left: 20px; color: #666;">
+                <span>💡 LAB을 클릭하면 구글 캘린더에 추가됩니다</span>
+            </div>
+        </div>
+
+        <div class="schedule-grid">
+            <!-- 월요일 -->
+            <div class="day-column">
+                <div class="day-header">월</div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">GiTi LAB</div>
+                    <div class="lab-info">온라인<br>14:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">Humanoid Robot 2기 LAB</div>
+                    <div class="lab-info">온라인<br>17:30</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">BioSolution LAB</div>
+                    <div class="lab-info">온라인<br>18:30</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">M2</div>
+                    <div class="lab-name">Beyond Vision AI LAB</div>
+                    <div class="lab-info">강남캠<br>19:30</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">C2</div>
+                    <div class="lab-name">Deep Gen. Prob. Models 2 LAB</div>
+                    <div class="lab-info">강남캠<br>19:30</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">C3</div>
+                    <div class="lab-name">Deep Multimodal LAB</div>
+                    <div class="lab-info">강남캠<br>19:30</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">FAIR AI LAB</div>
+                    <div class="lab-info">온라인<br>19:30</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">RSC LAB</div>
+                    <div class="lab-info">온라인<br>20:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">HAE-RAE LAB</div>
+                    <div class="lab-info">온라인<br>20:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">RAG LAB</div>
+                    <div class="lab-info">온라인<br>20:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">AlphaChess LAB</div>
+                    <div class="lab-info">온라인<br>20:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">AI-AI LAB</div>
+                    <div class="lab-info">온라인<br>21:00</div>
+                </div>
+            </div>
+
+            <!-- 화요일 -->
+            <div class="day-column">
+                <div class="day-header">화</div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">Like_Human LAB</div>
+                    <div class="lab-info">온라인<br>19:00</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">C3</div>
+                    <div class="lab-name">[테크포임팩트] 다정 LAB</div>
+                    <div class="lab-info">강남캠<br>19:00</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">M1</div>
+                    <div class="lab-name">SearchFund Lab 1기 LAB</div>
+                    <div class="lab-info">강남캠<br>19:30</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">M2</div>
+                    <div class="lab-name">All Sense LAB</div>
+                    <div class="lab-info">강남캠<br>19:30</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">C4</div>
+                    <div class="lab-name">쩝쩝 LAB 시즌2</div>
+                    <div class="lab-info">강남캠<br>19:30</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">HAERAE LAB</div>
+                    <div class="lab-info">온라인<br>22:00</div>
+                </div>
+            </div>
+
+            <!-- 수요일 -->
+            <div class="day-column">
+                <div class="day-header">수</div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">CVE LAB</div>
+                    <div class="lab-info">온라인<br>11:00</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">M3</div>
+                    <div class="lab-name">생성 모델 개선 연구 LAB</div>
+                    <div class="lab-info">강남캠<br>16:00</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">C3</div>
+                    <div class="lab-name">[테크포임팩트] 가방싸 LAB</div>
+                    <div class="lab-info">강남캠<br>19:00</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">C4</div>
+                    <div class="lab-name">[테크포임팩트] 동접 LAB</div>
+                    <div class="lab-info">강남캠<br>19:00</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">M1-2</div>
+                    <div class="lab-name">AI 에이전트 LAB</div>
+                    <div class="lab-info">강남캠<br>19:30</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">AA LAB</div>
+                    <div class="lab-info">온라인<br>19:30</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">Game AI LAB</div>
+                    <div class="lab-info">온라인<br>20:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">AI퀀트투자 LAB</div>
+                    <div class="lab-info">온라인<br>20:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">Medical AI LAB</div>
+                    <div class="lab-info">온라인<br>21:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">Voice Conversational Agent LAB</div>
+                    <div class="lab-info">온라인<br>22:00</div>
+                </div>
+            </div>
+
+            <!-- 목요일 -->
+            <div class="day-column">
+                <div class="day-header">목</div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">만년설 LAB</div>
+                    <div class="lab-info">온라인<br>19:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">AI-driven Aerospace LAB</div>
+                    <div class="lab-info">온라인<br>19:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">Wiki_RAI LAB</div>
+                    <div class="lab-info">온라인<br>19:00</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">C1</div>
+                    <div class="lab-name">[테크포임팩트] 온소리 LAB</div>
+                    <div class="lab-info">강남캠<br>19:00</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">C2</div>
+                    <div class="lab-name">Web3 AI 2기 LAB</div>
+                    <div class="lab-info">강남캠<br>19:30</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">C4</div>
+                    <div class="lab-name">[테크포임팩트] B-Peach LAB</div>
+                    <div class="lab-info">강남캠<br>19:30</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="lab-name">DELab</div>
+                    <div class="lab-info">강남캠<br>19:30</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">NVIDIA - Foundation Models LAB</div>
+                    <div class="lab-info">온라인<br>19:30</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">Open Neural Network Research LAB</div>
+                    <div class="lab-info">온라인<br>19:30</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">NVIDIA - Data Engineering with RAPIDS LAB</div>
+                    <div class="lab-info">온라인<br>20:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">MAAP LAB</div>
+                    <div class="lab-info">온라인<br>20:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">RAISE LAB</div>
+                    <div class="lab-info">온라인<br>20:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">Vibe Makers LAB</div>
+                    <div class="lab-info">온라인<br>20:00</div>
+                </div>
+            </div>
+
+            <!-- 토요일 1열 -->
+            <div class="day-column">
+                <div class="day-header">토</div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">Intelligent Agent LAB</div>
+                    <div class="lab-info">온라인<br>10:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">KoAlpaca LAB</div>
+                    <div class="lab-info">온라인<br>10:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">Roblox Creator LAB</div>
+                    <div class="lab-info">온라인<br>10:00</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">M3</div>
+                    <div class="lab-name">Spiritus LAB</div>
+                    <div class="lab-info">강남캠<br>10:30</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">C2</div>
+                    <div class="lab-name">반려로봇 LAB 시즌4</div>
+                    <div class="lab-info">강남캠<br>10:30</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">C3</div>
+                    <div class="lab-name">PISTAR LAB 3기</div>
+                    <div class="lab-info">강남캠<br>10:30</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">C3</div>
+                    <div class="lab-name">[테크포임팩트] 이을 LAB</div>
+                    <div class="lab-info">강남캠<br>10:30</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">M4</div>
+                    <div class="lab-name">OpenRLFT LAB</div>
+                    <div class="lab-info">강남캠<br>10:30</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">M4</div>
+                    <div class="lab-name">Quantum Computing LAB Season 4</div>
+                    <div class="lab-info">강남캠<br>10:30</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">M1-2</div>
+                    <div class="lab-name">DR4R LAB Season 7</div>
+                    <div class="lab-info">강남캠<br>10:30</div>
+                </div>
+                
+                <div class="lab-item yeoksam">
+                    <div class="room-number">203</div>
+                    <div class="lab-name">logp(x) LAB</div>
+                    <div class="lab-info">역삼캠<br>10:30</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">Advanced Computer Vision LAB 시즌2</div>
+                    <div class="lab-info">온라인<br>10:30</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">PatentAI LAB</div>
+                    <div class="lab-info">온라인<br>10:30</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">MirrorMind Lab</div>
+                    <div class="lab-info">온라인<br>10:30</div>
+                </div>
+            </div>
+
+            <!-- 토요일 2열 -->
+            <div class="day-column">
+                <div class="day-header">토</div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">PrompTart LAB</div>
+                    <div class="lab-info">온라인<br>11:00</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">C1</div>
+                    <div class="lab-name">[테크포임팩트] 유어덴티티 LAB</div>
+                    <div class="lab-info">강남캠<br>13:30</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">M3</div>
+                    <div class="lab-name">무인이동체 LAB</div>
+                    <div class="lab-info">강남캠<br>13:30</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">M4</div>
+                    <div class="lab-name">ISE LAB</div>
+                    <div class="lab-info">강남캠<br>13:30</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">MRE랩 LAB 시즌2</div>
+                    <div class="lab-info">온라인<br>13:30</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">Bio X Learning LAB</div>
+                    <div class="lab-info">온라인<br>14:00</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">C1</div>
+                    <div class="lab-name">MathML LAB</div>
+                    <div class="lab-info">강남캠<br>14:00</div>
+                </div>
+                
+                <div class="lab-item gangnam">
+                    <div class="room-number">M1-2</div>
+                    <div class="lab-name">AI 에이전트 LAB</div>
+                    <div class="lab-info">강남캠<br>14:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">PERSONA LAB</div>
+                    <div class="lab-info">온라인<br>16:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">4mula LAB</div>
+                    <div class="lab-info">온라인<br>16:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">VLMAI LAB</div>
+                    <div class="lab-info">온라인<br>16:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">DataWarriors LAB</div>
+                    <div class="lab-info">온라인<br>16:00</div>
+                </div>
+                
+                <div class="lab-item online">
+                    <div class="lab-name">Financial NLP LAB</div>
+                    <div class="lab-info">온라인<br>20:00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
