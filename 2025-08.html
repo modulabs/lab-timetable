@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #fff0f5;
             min-height: 100vh;
             padding: 10px;
             margin: 0;
@@ -88,11 +88,15 @@
             background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
         }
 
+        .legend-tech-for-impact {
+            background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+        }
+
         .notice {
             padding: 10px;
             text-align: center;
-            background: #fffbe6;
-            color: #8a6d3b;
+            background: #ffA500;
+            color: #ff0000;
             font-weight: bold;
             flex-shrink: 0;
         }
@@ -115,8 +119,8 @@
         }
 
         .day-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #f5f5f5;
+            color: #000000;
             text-align: center;
             padding: 10px;
             font-weight: 700;
@@ -141,6 +145,7 @@
             cursor: pointer;
             box-shadow: 0 1px 4px rgba(0,0,0,0.1);
             flex-shrink: 0;
+            color: #000000;
         }
 
         .lab-item:hover {
@@ -155,19 +160,24 @@
         /* 강남캠 - 빨간색 계열 */
         .gangnam {
             background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%);
-            color: #791111;
+            color: #000000;
         }
 
         /* 역삼캠 - 파란색 계열 */
         .yeoksam {
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: #004d7a;
+            color: #000000;
         }
 
         /* 온라인 - 보라색 */
         .online {
             background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            color: #4a148c;
+            color: #000000;
+        }
+
+        .tech-for-impact {
+            background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+            color: #000000;
         }
 
         .lab-name {
@@ -186,7 +196,6 @@
 
         .lab-info {
             font-size: clamp(0.55rem, 0.8vw, 0.7rem);
-            opacity: 0.8;
             line-height: 1.2;
         }
 
@@ -475,6 +484,10 @@
                 <div class="legend-color legend-online"></div>
                 <span>온라인</span>
             </div>
+            <div class="legend-item">
+                <div class="legend-color legend-tech-for-impact"></div>
+                <span>테크포임팩트 LAB</span>
+            </div>
             <div class="legend-item" style="margin-left: 20px; color: #666;">
                 <span>💡 LAB을 클릭하면 구글 캘린더에 바로 추가됩니다</span>
             </div>
@@ -565,7 +578,7 @@
                     <div class="lab-info">온라인 19:00</div>
                 </div>
                 
-                <div class="lab-item gangnam">
+                <div class="lab-item gangnam tech-for-impact">
                     <div class="room-number">C3</div>
                     <div class="lab-name">[테크포임팩트] 다정 LAB</div>
                     <div class="lab-info">강남캠 19:00</div>
@@ -612,13 +625,13 @@
                     <div class="lab-info">강남캠 16:00</div>
                 </div>
                 
-                <div class="lab-item gangnam">
+                <div class="lab-item gangnam tech-for-impact">
                     <div class="room-number">C3</div>
                     <div class="lab-name">[테크포임팩트] 가방싸 LAB</div>
                     <div class="lab-info">강남캠 19:00</div>
                 </div>
                 
-                <div class="lab-item gangnam">
+                <div class="lab-item gangnam tech-for-impact">
                     <div class="room-number">C4</div>
                     <div class="lab-name">[테크포임팩트] 동접 LAB</div>
                     <div class="lab-info">강남캠 19:00</div>
@@ -677,7 +690,7 @@
                     <div class="lab-info">온라인 19:00</div>
                 </div>
                 
-                <div class="lab-item gangnam">
+                <div class="lab-item gangnam tech-for-impact">
                     <div class="room-number">C1</div>
                     <div class="lab-name">[테크포임팩트] 온소리 LAB</div>
                     <div class="lab-info">강남캠 19:00</div>
@@ -689,7 +702,7 @@
                     <div class="lab-info">강남캠 19:30</div>
                 </div>
                 
-                <div class="lab-item gangnam">
+                <div class="lab-item gangnam tech-for-impact">
                     <div class="room-number">C4</div>
                     <div class="lab-name">[테크포임팩트] B-Peach LAB</div>
                     <div class="lab-info">강남캠 19:30</div>
@@ -770,7 +783,7 @@
                     <div class="lab-info">강남캠 10:30</div>
                 </div>
                 
-                <div class="lab-item gangnam">
+                <div class="lab-item gangnam tech-for-impact">
                     <div class="room-number">C3</div>
                     <div class="lab-name">[테크포임팩트] 이을 LAB</div>
                     <div class="lab-info">강남캠 10:30</div>
@@ -827,7 +840,7 @@
                     <div class="lab-info">온라인 11:00</div>
                 </div>
                 
-                <div class="lab-item gangnam">
+                <div class="lab-item gangnam tech-for-impact">
                     <div class="room-number">C1</div>
                     <div class="lab-name">[테크포임팩트] 유어덴티티 LAB</div>
                     <div class="lab-info">강남캠 13:30</div>
