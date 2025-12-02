@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모두의연구소 2025년 12월 LAB 시간표</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fff0f5;
+            min-height: 100vh;
+            padding: 10px;
+            margin: 0;
+            overflow-x: auto;
+        }
+
+        .container {
+            width: 100%;
+            max-width: none;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #F1585C;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            font-size: clamp(1.2rem, 2vw, 2rem);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px;
+            background: #f8f9fa;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .legend-gangnam {
+            background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%);
+        }
+
+        .legend-yeoksam {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .legend-online {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .legend-tech-for-impact {
+            background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 1px;
+            background: #e0e0e0;
+            margin: 0;
+            flex: 1;
+            font-size: clamp(0.7rem, 1vw, 1rem);
+        }
+
+        .day-column {
+            background: white;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .day-header {
+            background: #f5f5f5;
+            color: #000000;
+            text-align: center;
+            padding: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .day-content {
+            flex: 1;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .lab-item {
+            margin: 4px;
+            border-radius: 8px;
+            padding: 8px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+            color: #000000;
+        }
+
+        .lab-item:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .lab-item:active {
+            transform: translateY(0px);
+        }
+
+        .gangnam {
+            background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%);
+            color: #000000;
+        }
+
+        .yeoksam {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: #000000;
+        }
+
+        .online {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #000000;
+        }
+
+        .tech-for-impact {
+            background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+            color: #000000;
+        }
+
+        .lab-name {
+            font-weight: 700;
+            font-size: clamp(0.65rem, 1vw, 0.8rem);
+            line-height: 1.1;
+            margin-bottom: 4px;
+            word-break: keep-all;
+            hyphens: auto;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .lab-info {
+            font-size: clamp(0.55rem, 0.8vw, 0.7rem);
+            line-height: 1.2;
+        }
+
+        .room-number {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 1px 4px;
+            border-radius: 4px;
+            font-size: 0.6rem;
+            font-weight: 600;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: slideIn 0.3s ease;
+            overflow: hidden;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #F1585C 0%, #ff8a80 100%);
+            color: white;
+            padding: 25px;
+        }
+
+        .modal-header h2 {
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-info-row {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .modal-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .modal-label {
+            font-weight: bold;
+            color: #F1585C;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-value {
+            color: #333;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .close {
+            color: white;
+            float: right;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            line-height: 1;
+        }
+
+        .close:hover {
+            transform: rotate(90deg);
+        }
+
+        .emoji-icon {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 1400px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .lab-name {
+                font-size: 0.75rem;
+            }
+
+            .lab-info {
+                font-size: 0.65rem;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .lab-name {
+                font-size: 0.7rem;
+            }
+
+            .lab-info {
+                font-size: 0.6rem;
+            }
+
+            .room-number {
+                font-size: 0.55rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+
+            .container {
+                min-height: 100vh;
+                height: auto;
+            }
+
+            .header {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 1.4rem;
+            }
+
+            .day-header {
+                padding: 8px;
+                font-size: 1rem;
+            }
+
+            .lab-item {
+                margin: 3px;
+                padding: 6px;
+            }
+
+            .lab-name {
+                font-size: clamp(0.55rem, 1.5vw, 0.7rem);
+                -webkit-line-clamp: 3;
+                line-clamp: 3;
+            }
+
+            .lab-info {
+                font-size: clamp(0.45rem, 1vw, 0.6rem);
+            }
+
+            .legend {
+                gap: 10px;
+                padding: 8px;
+                font-size: 0.8rem;
+            }
+
+            .schedule-grid {
+                font-size: clamp(0.6rem, 2vw, 0.9rem);
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+
+            .modal-header {
+                padding: 20px;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>모두의연구소</h1>
+            <p>2025년 12월 LAB 시간표</p>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color legend-gangnam"></div>
+                <span>강남캠퍼스</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-yeoksam"></div>
+                <span>역삼캠퍼스</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-online"></div>
+                <span>온라인</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-tech-for-impact"></div>
+                <span>테크포임팩트 LAB</span>
+            </div>
+            <div class="legend-item" style="margin-left: 20px; color: #666;">
+                <span>💡 LAB을 클릭하면 상세정보를 볼 수 있습니다</span>
+            </div>
+        </div>
+
+        <div class="schedule-grid">
+            <div class="day-column">
+                <div class="day-header">월</div>
+                <div class="day-content" id="monday-meetings"></div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">화</div>
+                <div class="day-content" id="tuesday-meetings"></div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">수</div>
+                <div class="day-content" id="wednesday-meetings"></div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">목</div>
+                <div class="day-content" id="thursday-meetings"></div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">토</div>
+                <div class="day-content" id="saturday1-meetings"></div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">토</div>
+                <div class="day-content" id="saturday2-meetings"></div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">일</div>
+                <div class="day-content" id="sunday-meetings"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="meetingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 id="modal-title"></h2>
+                <div id="modal-subtitle"></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-info-row">
+                    <div class="modal-label"><span class="emoji-icon">👤</span>랩장</div>
+                    <div class="modal-value" id="modal-leader"></div>
+                </div>
+                <div class="modal-info-row">
+                    <div class="modal-label"><span class="emoji-icon">⏰</span>시간</div>
+                    <div class="modal-value" id="modal-time"></div>
+                </div>
+                <div class="modal-info-row">
+                    <div class="modal-label"><span class="emoji-icon">📍</span>장소</div>
+                    <div class="modal-value" id="modal-location"></div>
+                </div>
+                <div class="modal-info-row">
+                    <div class="modal-label"><span class="emoji-icon">📝</span>소개</div>
+                    <div class="modal-value" id="modal-description"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getLocationType(loc) {
+            if (loc.indexOf('강남캠') >= 0) return 'gangnam';
+            if (loc.indexOf('역삼캠') >= 0) return 'yeoksam';
+            return 'online';
+        }
+
+        function getRoom(loc) {
+            var match = loc.match(/(C\d+|M\d+(?:-\d+)?|\d+)/);
+            return match ? match[1] : '';
+        }
+
+        function extractTime(locationTime) {
+            var parts = locationTime.split(',');
+            if (parts.length < 2) return '';
+            var timeStr = parts[1].trim();
+            return timeStr;
+        }
+
+        function parseTimeRange(timeStr) {
+            var match = timeStr.match(/(\d{1,2}):(\d{2})/);
+            if (!match) return timeStr;
+            var hour = parseInt(match[1]);
+            var minute = match[2];
+            return hour + ':' + minute;
+        }
+
+        var csvData = `월	온라인, 14:00	GiTi LAB	신유진	COLM 2024 논문을 제출
+월	온라인, 20:00	HAE-RAE LAB	손규진	한국어 자연어 처리를 연구합니다.
+월	온라인, 19:00	AI 생기부 분석 서비스 개발 LAB	오정민	AI를 활용한 생기부 분석 및 맞춤형 입시 정보 제공 서비스
+화	강남캠C4, 19:30	쩝쩝 LAB 시즌2	김성록	사용자의 선호와 상황에 맞춘 맞춤형 맛집 추천 시스템을 연구하고 구현하는 연구실
+화	강남캠M2, 19:30	All Sense LAB	김재욱	인공지능 탑티어를 목표로 논문 작성 및 아이디어를 공유하는 랩입니다.
+화	강남캠C3, 19:00	[테크포임팩트 2기] 다정 LAB	김승희	자립 준비 청년들의 실제 니즈를 파악하고, 브라더스키퍼와 함께 현장에서 바로 사용 가능한 MVP를 개발
+수	온라인, 21:00	Medical AI LAB	이수정	Study Medical Data with Artificial Intelligence (병원에서 발생하는 여러 의료 정보를 사용하여 (이미지, 실시간 데이터, 건강정보데이터 등) 실제 의료 현장에서 사용할 수 있는 의료 AI 를 개발하고 학술 활동하는 것을 목적으로 하는 랩)
+수	온라인, 22:00	Vocie Conversational Agent LAB	김영인	음성 대화형 챗봇을 연구하며 구어체 답변 생성과 실시간 통신 기술을 연구 개발
+수	온라인, 20:00	Game AI LAB	서동해	우리 연구소는 게임 속에서 유저와 함께 멋진 스토리를 만들어가는 인공지능을 연구합니다.
+수	온라인, 20:00	AI퀀트투자 LAB	김예진	AI를 활용해서 주식시장에 도전하는 모두의 AI 퀀트 투자 랩
+수	강남캠C3, 19:00	[테크포임팩트 2기] 가방싸 LAB	최미연	테크포임팩트 캠퍼스에서 개발된 "가방으로 살아남기" 게임을 완성도 높은 교육 도구로 고도화
+수	강남캠C4, 19:00	[테크포임팩트 2기] 동접 LAB	조현욱	AI 기반 이미지 분석을 통해 매장 내부의 접근성 요소를 자동으로 추출하고 평가하는 시스템을 개발
+목	온라인, 19:30	NVIDIA - Foundation Models LAB	김준수	엔비디아 NGC CATALOG에서 제공하는 서비스 활용 연구
+목	온라인, 20:00	MAAP LAB	고준영	Music AI Assemble People
+목	온라인, 19:00	만년설 LAB	조인서	키르기스스탄의 만년설 해빙을 예측하는데 도움을 주는 데이터과학 웹도구를 만들려고 합니다.
+목	온라인, 19:00	AI-driven Aerospace LAB	이동우	AI를 이용하여 항공우주 문제를 혁신적으로 해결하고자 합니다!
+목	강남캠M2, 19:30	DELab	전민규	저번에 했던 DELab 2기 입니다.
+목	강남캠C4, 19:30	[테크포임팩트 2기] B-Peach LAB	황윤경	느린 학습자를 위한 쉬운 우리말 번안기 제작
+목	강남캠C1, 19:00	[테크포임팩트 2기] 온소리 LAB	정효정, 이호준	AI 음성 합성 기술을 활용하여 일상 단어와 환경음 인식 훈련이 가능한 웹 기반 도구를 개발
+목	강남캠M2, 19:30	DE LAB	전민규	NLP, 이미지 AI, 그리고 LLM 에이전트 등 AI관련 다양한 분야의 연구를 진행합니다
+토	온라인, 19:00	연구 자동화 LAB	박철	n8n을 활용한 논문 필터링 자동화
+토	온라인, 10:00	Intelligent Agent LAB	이정우	'Intelligent Agent Lab'은 최신의 강화학습 알고리즘 기법들의 이론을 스터디하고 해당 기법을 기반으로 연구를 진행합니다. 또한 최신 알고리즘에 대한 리뷰 및 프로젝트 중에 도출된 아이디어를 기반으로 논문을 작성하는 것을 목표로 합니다.
+토	온라인, 13:30	무인이동체 LAB	박광수	Develop autonomous driverless vehicles
+토	온라인, 10:00	KoAlpaca LAB	이준범	Research to better write Korean language models
+토	강남캠M4, 13:30	ISE LAB	남승호	Intelligent Software Engineering
+토	강남캠M3, 10:30	Spiritus LAB	황윤경	문학과 현실의 경계 지우기: 인문학, 기술 그리고 사람
+토	온라인, 14:00	Bio X Learning LAB	양우정	Nature Communications 논문을 제출
+토	온라인, 11:00	PrompTart LAB	명지윤	맛있는 프롬프트 레시피 찾아보기 : GPT, 라마, 미드저니, Stable Diffusion
+토	온라인, 10:30	PatentAI LAB	김수형	AI를 활용한 특허 연구를 통해 실무적 경영 환경에 유의미한 인사이트를 도출하는 연구 모임
+토	강남캠C2, 10:30	반려로봇 LAB 시즌4	현청천	한 가정이 한 개 이상의 로봇을 소유하게 되는 퍼스널 로봇 시대를 준비하는 랩입니다.
+토	온라인, 16:00	페르소나 LAB	최영	LLM의 특정 캐릭터로의 효과적인 fine-tuning 기법에 대한 연구
+토	강남캠M1-2, 10:30	DR4R LAB Season 7 LAB	박철	Imitation learning for real world(ft.LeRobot)
+토	온라인, 10:30	MirrorMind Lab	오승환	AI인격, 협업, 조직 진화를 위한 실험적 아키텍처 MirrorMind 구현 및 실험
+토	강남캠C3, 10:30	[테크포임팩트 2기] 이을 LAB	최재훈	 AR과 GPS를 활용한 게임화된 지역 참여 시스템을 통해 관계인구의 활동을 질적으로 데이터화
+토	강남캠C3, 13:00	[테크포임팩트 2기] 유어덴티티 LAB	김성준	학교 밖 청소년들의 다양한 매력과 개성을 표현할 수 있는 PWA 기반 커뮤니티 플랫폼을 개발
+토	온라인, 12:00	Urban LAB	장기문	도시 문제 해결을 위해 데이터 및 AI 기반 방법론을 활용한 연구
+토	온라인, 16:00	솔로프리너 업무자동화 에이전트 LAB	김진이	솔로프리너의 업무/창작/커뮤니티 자동화를 돕는 다양한 AI 에이전트 서비스를 개발합니다.
+토	강남캠C4, 15:00	[사이드임팩트] Hell Maker LAB	김도혁	길거리 간접 흡연 문제를 해결하기 위한 개발된 AIOT장치의 보안 및 업데이트
+토	역삼캠205, 10:30	aim LAB	김유진	대학생을 위한 채용 솔루션을 개발하고 있는 Lab 입니다
+토	온라인, 13:00	automall LAB	김류원	반복적인 쇼핑몰 운영 업무(상품 등록·CS·마케팅)를 자동화함
+화	온라인, 19:00	TourGenie LAB	정기용	Agentic AI를 기반으로 여행 계획 생성 워크플로우 제작 및 벤치마크 데이터셋 구축
+격주 수	온라인, 19:00	소프트웨어형디지털치료제 LAB	정효정	데이터와 디자인씽킹으로 환자 중심 소프트웨어형 디지털치료제를 만들어가는 실험실
+격주 수	온라인, 17:00	바이오헬스논문연구 LAB	정효정	바이오헬스 분야 연구자로서의 첫 발걸음을 함께 내딛는 랩
+토	역삼캠202, 10:30	Multi-Agent LLM Trading LAB	성민석	Multi-Agent LLM을 활용한 트레이딩 시스템 구축
+격주 수	강남캠M4, 19:30	HR Case-Study LAB	서승민	현업 HR간의 실제 사례를 나누고 실행 가능한 솔루션을 함께 만들어가는 성장형 스터디 랩
+화	온라인, 19:30	image generation LAB	김형섭	이미지 생성 AI와 관련한 연구를 합니다.
+토	온라인, 14:00	무드톡 프로젝트 LAB	이수경	게임기반 심리상담AI
+토	온라인, 14:30	FREE LAB	신기성	자유로운 연구와 견고한 실험을 통해 의미있는 질문에 대한 답을 찾아갑니다.
+수	강남캠M1 - 2, 19:30	AI 에이전트 LAB(Season 2) LAB	최규남	AI 에이전트를 스터디하고, 실생활에 적용하고, 내용을 공유하는 모임
+격주 월	온라인, 20:00	Infosys LAB	어경권	여러 관점에서 다양한 Information System을 연구하는 LAB
+월	온라인, 19:30	Human-Centered AI LAB	장혜정	AI 기술과 사람이 조화롭게 공존하는 미래를 설계하는 연구 모임
+일	온라인, 19:30	Biomedical Signal Processing LAB	조현우	딥러닝을 포함하여 의료 분야의 신호 처리를 연구하는 모임입니다.
+수	온라인, 20:00	Vibe Makers Season 2 LAB	홍민지	AI를 기반으로 아이디어를 현실로 구현하는 메이커 랩
+격주 수	온라인, 20:00	NVIDIA - Data Science with RAPIDS LAB Season2	이제영	엔비디아 RAPIDS 응용 방안에 대한 탐구 및 경험 연구, RAPIDS LAB 시즌 2
+수	온라인, 13:00	AI EduComm LAB	오정민	AI가 교사-학생-학부모 간 커뮤니케이션을 따뜻하고 효율적으로 바꾸는 방법을 연구합니다.
+월	온라인, 19:00	OpenNN LAB Season 2	윤주영	인공신경망을 연구하는 Open Neural Network Research Lab 2기입니다
+화	강남캠C2, 19:30	Web3 AI 시즌3 LAB	김민현	탈중앙화 네트워크에서 상호작용하며 스스로 학습하는 AI 에이전트를 개발하고 연구합니다.
+격주 수	강남캠M3, 19:30	BlockBIM LAB	김재성	블록체인 기술을 활용한 신뢰 기반 협업 건축 설계 시스템 연구 및 프로토타입 개발
+격주 월	온라인, 13:00	ss LAB	김동균	오디오 AI에 대해 공부하고 연구하는 모임입니다.`.split('\n');
+
+        var data = [];
+        for (var i = 0; i < csvData.length; i++) {
+            var parts = csvData[i].split('\t');
+            if (parts.length >= 5) {
+                var day = parts[0].replace('격주 ', '').trim();
+                var locationTime = parts[1];
+                var loc = locationTime.split(',')[0].trim();
+                var time = extractTime(locationTime);
+
+                data.push({
+                    day: day,
+                    location: loc,
+                    room: getRoom(loc),
+                    type: getLocationType(loc),
+                    time: time,
+                    name: parts[2],
+                    leader: parts[3],
+                    description: parts[4],
+                    isTech: parts[2].indexOf('[테크포임팩트') >= 0 || parts[2].indexOf('[사이드임팩트]') >= 0
+                });
+            }
+        }
+
+        var dayMap = {'월': 'monday', '화': 'tuesday', '수': 'wednesday', '목': 'thursday', '토': 'saturday', '일': 'sunday'};
+        var organized = {monday: [], tuesday: [], wednesday: [], thursday: [], saturday: [], sunday: []};
+
+        for (var i = 0; i < data.length; i++) {
+            var m = data[i];
+            var key = dayMap[m.day];
+            if (key && organized[key]) {
+                organized[key].push(m);
+            }
+        }
+
+        function getMinutes(timeStr) {
+            var match = timeStr.match(/(\d{1,2}):(\d{2})/);
+            if (!match) return 0;
+            return parseInt(match[1]) * 60 + parseInt(match[2]);
+        }
+
+        for (var key in organized) {
+            organized[key].sort(function(a, b) {
+                return getMinutes(a.time) - getMinutes(b.time);
+            });
+        }
+
+        var satMeetings = organized.saturday;
+        var midPoint = Math.ceil(satMeetings.length / 2);
+        var saturday1 = satMeetings.slice(0, midPoint);
+        var saturday2 = satMeetings.slice(midPoint);
+
+        function renderMeetings(meetings, containerId) {
+            var container = document.getElementById(containerId);
+            for (var i = 0; i < meetings.length; i++) {
+                var m = meetings[i];
+                var div = document.createElement('div');
+                var className = 'lab-item ' + m.type;
+                if (m.isTech) className += ' tech-for-impact';
+                div.className = className;
+
+                var html = '';
+                if (m.room) html += '<div class="room-number">' + m.room + '</div>';
+                html += '<div class="lab-name">' + m.name + '</div>';
+                html += '<div class="lab-info">' + m.location + ' ' + m.time + '</div>';
+                div.innerHTML = html;
+
+                div.onclick = (function(meeting) {
+                    return function() {
+                        document.getElementById('modal-title').textContent = meeting.name;
+                        document.getElementById('modal-subtitle').textContent = meeting.day + '요일';
+                        document.getElementById('modal-leader').textContent = meeting.leader;
+                        document.getElementById('modal-time').textContent = meeting.time;
+                        document.getElementById('modal-location').textContent = meeting.location;
+                        document.getElementById('modal-description').textContent = meeting.description;
+                        document.getElementById('meetingModal').style.display = 'block';
+                    };
+                })(m);
+
+                container.appendChild(div);
+            }
+        }
+
+        renderMeetings(organized.monday, 'monday-meetings');
+        renderMeetings(organized.tuesday, 'tuesday-meetings');
+        renderMeetings(organized.wednesday, 'wednesday-meetings');
+        renderMeetings(organized.thursday, 'thursday-meetings');
+        renderMeetings(saturday1, 'saturday1-meetings');
+        renderMeetings(saturday2, 'saturday2-meetings');
+        renderMeetings(organized.sunday, 'sunday-meetings');
+
+        document.getElementsByClassName('close')[0].onclick = function() {
+            document.getElementById('meetingModal').style.display = 'none';
+        };
+
+        window.onclick = function(event) {
+            if (event.target.id === 'meetingModal') {
+                document.getElementById('meetingModal').style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html>
