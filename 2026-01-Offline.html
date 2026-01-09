@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모두의연구소 2026년 1월 LAB 시간표</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, #d7ddea, #a6c0fe);
+            min-height: 100vh;
+            padding: 10px;
+            margin: 0;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        /* Snowflake Animation */
+        .snowflake {
+            color: #fff;
+            font-size: 1.2em;
+            font-family: Arial, sans-serif;
+            text-shadow: 0 0 5px #000;
+            position: fixed;
+            top: -10%;
+            z-index: 9999;
+            user-select: none;
+            cursor: default;
+            animation-name: snowflakes-fall, snowflakes-shake;
+            animation-duration: 10s, 3s;
+            animation-timing-function: linear, ease-in-out;
+            animation-iteration-count: infinite, infinite;
+            animation-play-state: running, running;
+        }
+
+        @keyframes snowflakes-fall {
+            0% {
+                top: -10%;
+            }
+
+            100% {
+                top: 100%;
+            }
+        }
+
+        @keyframes snowflakes-shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(80px);
+            }
+        }
+
+        .snowflake:nth-of-type(1) {
+            left: 1%;
+            animation-delay: 0s, 0s;
+        }
+
+        .snowflake:nth-of-type(2) {
+            left: 10%;
+            animation-delay: 1s, 1s;
+        }
+
+        .snowflake:nth-of-type(3) {
+            left: 20%;
+            animation-delay: 6s, 0.5s;
+        }
+
+        .snowflake:nth-of-type(4) {
+            left: 30%;
+            animation-delay: 4s, 2s;
+        }
+
+        .snowflake:nth-of-type(5) {
+            left: 40%;
+            animation-delay: 2s, 2s;
+        }
+
+        .snowflake:nth-of-type(6) {
+            left: 50%;
+            animation-delay: 8s, 3s;
+        }
+
+        .snowflake:nth-of-type(7) {
+            left: 60%;
+            animation-delay: 6s, 2s;
+        }
+
+        .snowflake:nth-of-type(8) {
+            left: 70%;
+            animation-delay: 2.5s, 1s;
+        }
+
+        .snowflake:nth-of-type(9) {
+            left: 80%;
+            animation-delay: 1s, 0s;
+        }
+
+        .snowflake:nth-of-type(10) {
+            left: 90%;
+            animation-delay: 3s, 1.5s;
+        }
+
+        .container {
+            width: 100%;
+            max-width: none;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            /* Semi transparent for ice effect */
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(5px);
+            z-index: 10;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            /* Winter Blue Gradient */
+            color: white;
+            text-align: center;
+            padding: 15px;
+            flex-shrink: 0;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            font-size: clamp(1.2rem, 2vw, 2rem);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.95;
+            margin: 0;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            /* 5 columns: Tue, Wed, Thu, Sat1, Sat2 */
+            gap: 1px;
+            background: #b0c4de;
+            /* Light Steel Blue */
+            margin: 0;
+            flex: 1;
+            font-size: clamp(0.7rem, 1vw, 1rem);
+        }
+
+        .day-column {
+            background: rgba(255, 255, 255, 0.85);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .day-header {
+            background: #e6f3ff;
+            /* Very pale blue */
+            color: #2c3e50;
+            text-align: center;
+            padding: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            border-bottom: 2px solid #b0c4de;
+        }
+
+        .day-content {
+            flex: 1;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .lab-item {
+            margin: 4px;
+            border-radius: 8px;
+            padding: 8px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+            color: #2c3e50;
+        }
+
+        .lab-item:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Winter Themed Colors for Labs */
+        .gangnam {
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            /* Icy Blue */
+            border: 1px solid #90caf9;
+        }
+
+        .yeoksam {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            /* Lavender Ice */
+            border: 1px solid #d1c4e9;
+        }
+
+        .online {
+            background: linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%);
+            /* Silver/Cloud */
+            border: 1px solid #b0bec5;
+        }
+
+        .tech-for-impact {
+            background: linear-gradient(135deg, #fff1eb 0%, #ace0f9 100%);
+            /* Ice Warmth */
+            border: 1px solid #b3e5fc;
+        }
+
+        .lab-name {
+            font-weight: 700;
+            font-size: clamp(0.65rem, 1vw, 0.8rem);
+            line-height: 1.1;
+            margin-bottom: 4px;
+            word-break: keep-all;
+            hyphens: auto;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .lab-info {
+            font-size: clamp(0.55rem, 0.8vw, 0.7rem);
+            line-height: 1.2;
+            opacity: 0.9;
+        }
+
+        .room-number {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #0d47a1;
+            padding: 1px 4px;
+            border-radius: 4px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background-color: rgba(255, 255, 255, 0.95);
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+            overflow: hidden;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #66a6ff 0%, #89f7fe 100%);
+            color: white;
+            padding: 25px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header h2 {
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-info-row {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .modal-label {
+            font-weight: bold;
+            color: #0288d1;
+            /* Strong Blue */
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        .modal-value {
+            color: #37474f;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .close {
+            color: white;
+            float: right;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .close:hover {
+            transform: rotate(90deg);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+
+            .header h1 {
+                font-size: 1.4rem;
+            }
+
+            .day-header {
+                padding: 8px;
+                font-size: 1rem;
+            }
+
+            .lab-item {
+                margin: 3px;
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="snowflakes" aria-hidden="true">
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>모두의연구소</h1>
+            <p>2026년 1월 LAB 시간표</p>
+        </div>
+
+        <div class="schedule-grid">
+            <!-- Monday removed -->
+
+            <div class="day-column">
+                <div class="day-header">화</div>
+                <div class="day-content" id="tuesday-meetings"></div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">수</div>
+                <div class="day-content" id="wednesday-meetings"></div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">목</div>
+                <div class="day-content" id="thursday-meetings"></div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">토(오전)</div>
+                <div class="day-content" id="saturday1-meetings"></div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">토(오후)</div>
+                <div class="day-content" id="saturday2-meetings"></div>
+            </div>
+
+            <!-- Sunday removed -->
+        </div>
+    </div>
+
+    <div id="meetingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 id="modal-title"></h2>
+                <div id="modal-subtitle"></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-info-row">
+                    <div class="modal-label"><span class="emoji-icon">👤</span>랩장</div>
+                    <div class="modal-value" id="modal-leader"></div>
+                </div>
+                <div class="modal-info-row">
+                    <div class="modal-label"><span class="emoji-icon">⏰</span>시간</div>
+                    <div class="modal-value" id="modal-time"></div>
+                </div>
+                <div class="modal-info-row">
+                    <div class="modal-label"><span class="emoji-icon">📍</span>장소</div>
+                    <div class="modal-value" id="modal-location"></div>
+                </div>
+                <div class="modal-info-row">
+                    <div class="modal-label"><span class="emoji-icon">📝</span>소개</div>
+                    <div class="modal-value" id="modal-description"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getLocationType(loc) {
+            if (loc.indexOf('강남캠') >= 0) return 'gangnam';
+            if (loc.indexOf('역삼캠') >= 0) return 'yeoksam';
+            return 'online';
+        }
+
+        function getRoom(loc) {
+            var match = loc.match(/(C\d+|M\d+(?:-\d+)?|\d+)/);
+            return match ? match[1] : '';
+        }
+
+        function extractTime(locationTime) {
+            var parts = locationTime.split(',');
+            if (parts.length < 2) return '';
+            var timeStr = parts[1].trim();
+            return timeStr;
+        }
+
+        var csvData = `
+화	강남캠 M2, 19:30 ~ 21:30	All Sense LAB	김재욱	\n화	강남캠 C2, 19:30 ~ 21:30	Web3 AI 시즌3 LAB	김민현	\n화	강남캠 C3, 19:00 - 22:00	[테크포임팩트 2기] 다정 LAB	김승희	\n격주 수	강남캠 M4, 19:30 ~ 21:30	HR Case-Study LAB	서승민	\n수	강남캠 M1 - 2, 19:30 ~ 21:30	AI 에이전트 LAB(Season 2) LAB	최규남	\n토	강남캠 C2, 14:00 ~ 17:30	모두의 로보틱스 LAB	조인령	일상에 범용적으로 쓰일 수 있는 로봇을 연구합니다\n격주 수	강남캠 C3, 19:30 ~ 21:30	BlockBIM LAB	김재성	\n토	강남캠 C1, 10:30 ~ 13:00	[테크포임팩트 2기] 가방싸 LAB	최미연	\n수	강남캠 C4, 19:00 - 22:00	[테크포임팩트 2기] 동접 LAB	조현욱	\n목	강남캠 M2, 19:30 ~ 21:30	DELab	전민규	\n목	강남캠 C4, 19:30 - 21:30	[테크포임팩트 2기] B-Peach LAB	황윤경	\n목	강남캠 C1, 19:00 - 21:00	[테크포임팩트 2기] 온소리 LAB	정효정, 이호준	\n토	강남캠 M4, 13:30-15:30	ISE LAB	남승호	\n토	강남캠 M3, 10:30-12:30	Spiritus LAB	황윤경	\n토	강남캠 M4, 10:30 - 12:30	Quantum Computing LAB Season 4 LAB	이진호	\n토	강남캠 C4, 10:30 ~ 12:30	Multi-Agent LLM Trading LAB	성민석	\n토	강남캠 C2, 10:30 ~ 12:30	반려로봇랩 시즌5 LAB	현청천	반려로봇랩은 모든 가정이 로봇과 함께 살아가는 '퍼스널 로봇 시대'를 준비하는 랩입니다.\n토	강남캠 C3, 10:30 - 13:00	[테크포임팩트 2기] 이을 LAB	최재훈	\n토	강남캠 C3, 13:00 - 17:00	[테크포임팩트 2기] 유어덴티티 LAB	김성준	\n화	강남캠 C4, 19:30 ~ 21:30	Creative Vibe Coding LAB	한태재	코딩없는 Creative Vibe Coding\n토	강남캠 M3, 14:00 ~ 16:00	DE LAB Season3	전민규	NLP, 이미지 AI, 그리고 LLM 에이전트 등 AI관련 다양한 분야의 연구를 진행합니다\n토	강남캠 M1, M2, 10:30 ~ 13:00	DR4R LAB Season 8 LAB	박철	Physical AI Study and Implementation
+`.split('\n');
+
+        var data = [];
+        for (var i = 0; i < csvData.length; i++) {
+            var parts = csvData[i].split('\t');
+            if (parts.length >= 5) {
+                var day = parts[0].replace('격주 ', '').trim();
+                var locationTime = parts[1];
+                var loc = locationTime.split(',')[0].trim();
+                var time = extractTime(locationTime);
+
+                data.push({
+                    day: day,
+                    location: loc,
+                    room: getRoom(loc),
+                    time: time,
+                    name: parts[2],
+                    leader: parts[3],
+                    description: parts[4],
+                    type: getLocationType(loc),
+                    isTech: parts[2].indexOf('[테크포임팩트') >= 0 || parts[2].indexOf('[사이드임팩트]') >= 0
+                });
+            }
+        }
+
+        var dayMap = { '월': 'monday', '화': 'tuesday', '수': 'wednesday', '목': 'thursday', '토': 'saturday', '일': 'sunday' };
+        var organized = { monday: [], tuesday: [], wednesday: [], thursday: [], saturday: [], sunday: [] };
+
+        for (var i = 0; i < data.length; i++) {
+            var m = data[i];
+            var key = dayMap[m.day];
+            if (key && organized[key]) {
+                organized[key].push(m);
+            }
+        }
+
+        function getMinutes(timeStr) {
+            var match = timeStr.match(/(\d{1,2}):(\d{2})/);
+            if (!match) return 0;
+            return parseInt(match[1]) * 60 + parseInt(match[2]);
+        }
+
+        for (var key in organized) {
+            organized[key].sort(function (a, b) {
+                return getMinutes(a.time) - getMinutes(b.time);
+            });
+        }
+
+        var satMeetings = organized.saturday;
+        var midPoint = Math.ceil(satMeetings.length / 2);
+        var saturday1 = satMeetings.slice(0, midPoint);
+        var saturday2 = satMeetings.slice(midPoint);
+
+        function renderMeetings(meetings, containerId) {
+            var container = document.getElementById(containerId);
+            for (var i = 0; i < meetings.length; i++) {
+                var m = meetings[i];
+                var div = document.createElement('div');
+                var className = 'lab-item ' + m.type;
+                if (m.isTech) className += ' tech-for-impact';
+                div.className = className;
+
+                var html = '';
+                if (m.room) html += '<div class="room-number">' + m.room + '</div>';
+                html += '<div class="lab-name">' + m.name + '</div>';
+                html += '<div class="lab-info">' + m.location + ' ' + m.time + '</div>';
+                div.innerHTML = html;
+
+                div.onclick = (function (meeting) {
+                    return function () {
+                        document.getElementById('modal-title').textContent = meeting.name;
+                        document.getElementById('modal-subtitle').textContent = meeting.day + '요일';
+                        document.getElementById('modal-leader').textContent = meeting.leader;
+                        document.getElementById('modal-time').textContent = meeting.time;
+                        document.getElementById('modal-location').textContent = meeting.location;
+                        document.getElementById('modal-description').textContent = meeting.description;
+                        document.getElementById('meetingModal').style.display = 'block';
+                    };
+                })(m);
+
+                container.appendChild(div);
+            }
+        }
+
+        renderMeetings(organized.tuesday, 'tuesday-meetings');
+        renderMeetings(organized.wednesday, 'wednesday-meetings');
+        renderMeetings(organized.thursday, 'thursday-meetings');
+        renderMeetings(saturday1, 'saturday1-meetings');
+        renderMeetings(saturday2, 'saturday2-meetings');
+
+        document.getElementsByClassName('close')[0].onclick = function () {
+            document.getElementById('meetingModal').style.display = 'none';
+        };
+
+        window.onclick = function (event) {
+            if (event.target.id === 'meetingModal') {
+                document.getElementById('meetingModal').style.display = 'none';
+            }
+        };
+    </script>
+</body>
+
+</html>
