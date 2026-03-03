@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모두의연구소 2026년 3월 LAB 시간표</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #FFE0EC 0%, #FFF9EC 50%, #E8FCE8 100%);
+            min-height: 100vh;
+            padding: 10px;
+            margin: 0;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        /* Sakura Petals Animation */
+        .petals {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .petal {
+            position: absolute;
+            background-color: transparent;
+            user-select: none;
+            cursor: default;
+            animation: petals-fall linear infinite, petals-shake ease-in-out infinite;
+        }
+
+        @keyframes petals-fall {
+            0% {
+                top: -10%;
+            }
+
+            100% {
+                top: 110%;
+            }
+        }
+
+        @keyframes petals-shake {
+
+            0%,
+            100% {
+                transform: translateX(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateX(100px) rotate(45deg);
+            }
+        }
+
+        .container {
+            width: 100%;
+            max-width: none;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            /* Semi transparent for ice effect */
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(5px);
+            z-index: 10;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #F6C1D1 0%, #FFD8B1 100%);
+            /* Pink to Peach Spring Gradient */
+            color: white;
+            text-align: center;
+            padding: 15px;
+            flex-shrink: 0;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            font-size: clamp(1.2rem, 2vw, 2rem);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.95;
+            margin: 0;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            /* 5 columns: Tue, Wed, Thu, Sat1, Sat2 */
+            gap: 1px;
+            background: #F6C1D1;
+            /* Sakura Pink Gap */
+            margin: 0;
+            flex: 1;
+            font-size: clamp(0.7rem, 1vw, 1rem);
+        }
+
+        .day-column {
+            background: rgba(255, 255, 255, 0.85);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .day-header {
+            background: linear-gradient(45deg, #FFFDE7 0%, #FFF59D 40%, #F8BBD0 70%, #E1BEE7 100%);
+            /* Mysterious Unicorn Yellow Gradient */
+            color: #ffffff;
+            text-align: center;
+            padding: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            border-bottom: 2px solid #F6C1D1;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .day-content {
+            flex: 1;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .lab-item {
+            margin: 4px;
+            border-radius: 8px;
+            padding: 8px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+            color: #2c3e50;
+        }
+
+        .lab-item:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Winter Themed Colors for Labs */
+        .gangnam {
+            background: linear-gradient(135deg, #F6C1D1 0%, #FFFFFF 100%);
+            /* Sakura Pink */
+            border: 1px solid #F6C1D1;
+        }
+
+        .yeoksam {
+            background: linear-gradient(135deg, #A8E6A3 0%, #FFFFFF 100%);
+            /* Spring Leaf Green */
+            border: 1px solid #A8E6A3;
+        }
+
+        .online {
+            background: #FFFFFF;
+            /* Pure White for Online */
+            border: 1px solid #F6C1D1;
+        }
+
+        .tech-for-impact {
+            background: linear-gradient(135deg, #FFF9EC 0%, #F6C1D1 100%);
+            /* Spring Warmth */
+            border: 1px solid #F6C1D1;
+        }
+
+        .lab-name {
+            font-weight: 700;
+            font-size: clamp(0.65rem, 1vw, 0.8rem);
+            line-height: 1.1;
+            margin-bottom: 4px;
+            word-break: keep-all;
+            hyphens: auto;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .lab-info {
+            font-size: clamp(0.55rem, 0.8vw, 0.7rem);
+            line-height: 1.2;
+            opacity: 0.9;
+        }
+
+        .room-number {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #D1C4E9;
+            /* Magical Lavender */
+            color: #2c3e50;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background-color: rgba(255, 255, 255, 0.95);
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+            overflow: hidden;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #F6C1D1 0%, #FFD8B1 100%);
+            color: white;
+            padding: 25px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header h2 {
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-info-row {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .modal-label {
+            font-weight: bold;
+            color: #F6C1D1;
+            /* Sakura Pink */
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        .modal-value {
+            color: #37474f;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .close {
+            color: white;
+            float: right;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .close:hover {
+            transform: rotate(90deg);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+
+            .header h1 {
+                font-size: 1.4rem;
+            }
+
+            .day-header {
+                padding: 8px;
+                font-size: 1rem;
+            }
+
+            .lab-item {
+                margin: 3px;
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="petals" id="petals-container"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>모두의연구소</h1>
+            <p>2026년 3월 LAB 시간표</p>
+        </div>
+
+        <div class="schedule-grid">
+            <!-- Monday removed -->
+
+            <div class="day-column">
+                <div class="day-header">화</div>
+                <div class="day-content" id="tuesday-meetings"></div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">수</div>
+                <div class="day-content" id="wednesday-meetings"></div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">목</div>
+                <div class="day-content" id="thursday-meetings"></div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">토(오전)</div>
+                <div class="day-content" id="saturday1-meetings"></div>
+            </div>
+
+            <div class="day-column">
+                <div class="day-header">토(오후)</div>
+                <div class="day-content" id="saturday2-meetings"></div>
+            </div>
+
+            <!-- Sunday removed -->
+        </div>
+    </div>
+
+    <div id="meetingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2 id="modal-title"></h2>
+                <div id="modal-subtitle"></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-info-row">
+                    <div class="modal-label"><span class="emoji-icon">👤</span>랩장</div>
+                    <div class="modal-value" id="modal-leader"></div>
+                </div>
+                <div class="modal-info-row">
+                    <div class="modal-label"><span class="emoji-icon">⏰</span>시간</div>
+                    <div class="modal-value" id="modal-time"></div>
+                </div>
+                <div class="modal-info-row">
+                    <div class="modal-label"><span class="emoji-icon">📍</span>장소</div>
+                    <div class="modal-value" id="modal-location"></div>
+                </div>
+                <div class="modal-info-row">
+                    <div class="modal-label"><span class="emoji-icon">📝</span>소개</div>
+                    <div class="modal-value" id="modal-description"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getLocationType(loc) {
+            if (loc.indexOf('강남캠') >= 0) return 'gangnam';
+            if (loc.indexOf('역삼캠') >= 0) return 'yeoksam';
+            return 'online';
+        }
+
+        function getRoom(loc) {
+            var match = loc.match(/(C\d+|M\d+(?:-\d+)?|\d+)/);
+            return match ? match[1] : '';
+        }
+
+        function extractTime(locationTime) {
+            var parts = locationTime.split(',');
+            if (parts.length < 2) return '';
+            var timeStr = parts[1].trim();
+            return timeStr;
+        }
+
+        var csvData = `
+월	온라인, 20:00	HAE-RAE LAB	손규진	
+격주 월	온라인, 20:00	Infosys LAB	어경권	
+월	온라인, 19:00	Neural-Superintelligence LAB Season 2	윤주영	University of Southern California LLM Training Dynamics 및 Optimization 연구
+격주 월	온라인, 20:00	무허가 지능낭비 연구소 LAB	임주왕	취미로 연구하는 사람들의 모임
+화	강남캠M2, 19:30	All Sense LAB	김재욱	
+화	강남캠C4, 19:30	Web3 AI 시즌3 LAB	김민현	
+수	온라인, 21:00	Medical AI LAB	이수정	
+격주 수	강남캠M4, 19:30	HR Case-Study LAB	서승민	
+수	강남캠M1 - 2, 19:30	AI 에이전트 LAB(Season 2) LAB	최규남	
+토	강남캠C4, 14:00	모두의 로보틱스 LAB	조인령	일상에 범용적으로 쓰일 수 있는 로봇을 연구합니다
+격주 수	온라인, 20:00	NVIDIA - Data Science with RAPIDS LAB Season2	이제영	가톨릭 대학교 Computer Vision & Machine Intelligence lab 1호 박사
+수	강남캠C3, 19:30	BlockBIM LAB (홀수 주 운영)	김재성	
+목	온라인, 19:30	NVIDIA - Foundation Models LAB	김준수	
+토	온라인, 10:00	Intelligent Agent LAB	이정우	
+토	온라인, 13:30	무인이동체 LAB	박광수	
+토	강남캠M4, 13:30	ISE LAB	남승호	
+토	온라인, 14:00	Bio X Learning LAB	양우정	
+토	온라인, 11:00	PrompTart LAB	명지윤	
+토	온라인, 14:30	FREE LAB	신기성	
+토	온라인, 11:00	Poetics Machine LAB	윤주호	LLM을 활용해 이야기의 플롯을 만드는 애플리케이션 개발 및 관련 연구 진행
+토	강남캠C1, 10:30	반려로봇랩 시즌5 LAB	현청천	반려로봇랩은 모든 가정이 로봇과 함께 살아가는 '퍼스널 로봇 시대'를 준비하는 랩입니다.
+목	강남캠C2-C3, 19:30	Creative Vibe Coding LAB	한태재	코딩없는 Creative Vibe Coding
+토	강남캠M3, 14:00	DE LAB Season3	전민규	NLP, 이미지 AI, 그리고 LLM 에이전트 등 AI관련 다양한 분야의 연구를 진행합니다
+토	강남캠M1-M2, 10:30	DR4R LAB Season 8 LAB	박철	Physical AI Study and Implementation
+수	온라인, 19:00	MAAP LAB	고준영	Music AI Assemble People
+월	온라인, 20:00	AI-AI Lab : #3 LAB	임주왕	예술&기술 융합을 연구하는 AI-Art Interaction Lab의 3번째 연구입니다.
+월	온라인, 20:00	Humanoid Robot 3기 LAB	정환석	Humanoid Robot 관련 논문을 직접 구현하고 오픈소스를 실행하며 스터디 합니다.
+월	온라인, 20:00	무허가 지능낭비 연구소 LAB	임주왕	취미로 연구하는 사람들의 모임
+토	온라인, 10:30	PatentAI (Season 2) LAB	김수형	AI 특허 분석을 활용해 실제 경영 현장에 적용 가능한 인사이트를 연구하는 모임
+토	강남캠M2, 14:00	Hell Maker - 2기 LAB	김도혁	세상에 쓸모 없고 재미난 것을 만드는 모임
+목	온라인, 20:00	바이브코딩빌더랩(VibeCoding Build Lab) LAB	김형일	바이브 코딩' 방법론 연구 및 실전 빌더 커뮤니티
+토	강남캠C4, 10:30	Agent Quant Trading LAB	윤지훈	AI 에이전트를 활용하여 퀀트트레이딩을 진행합니다.
+토	강남캠C1, 14:00	Tech for People LAB	김충환	수중 사고 시 탐색에 사용될 완전 자율무인잠수정 기술을 개발하는 모임입니다.
+화	강남캠M3, 19:30	쩝쩝LAB Season 3 LAB	김성록	맛집 추천 시스템을 설계하고, 앱·웹 서비스로 구현하는 데이터 & 개발 연구 모임
+화	강남캠C2, 19:30	다오랩 7기 LAB	한재선	미래 조직을 연구하고 설계하고 세상에 적용하는 실험실
+토	강남캠M3, 10:30-12:30	Spiritus LAB	황윤경	-
+`.split('\n');
+
+        var data = [];
+        for (var i = 0; i < csvData.length; i++) {
+            var parts = csvData[i].split('\t');
+            if (parts.length >= 5) {
+                var day = parts[0].replace('격주 ', '').trim();
+                var locationTime = parts[1];
+                var loc = locationTime.split(',')[0].trim();
+                var time = extractTime(locationTime);
+
+                data.push({
+                    day: day,
+                    location: loc,
+                    room: getRoom(loc),
+                    time: time,
+                    name: parts[2],
+                    leader: parts[3],
+                    description: parts[4],
+                    type: getLocationType(loc),
+                    isTech: parts[2].indexOf('[테크포임팩트') >= 0 || parts[2].indexOf('[사이드임팩트]') >= 0
+                });
+            }
+        }
+
+        var dayMap = { '월': 'monday', '화': 'tuesday', '수': 'wednesday', '목': 'thursday', '토': 'saturday', '일': 'sunday' };
+        var organized = { monday: [], tuesday: [], wednesday: [], thursday: [], saturday: [], sunday: [] };
+
+        for (var i = 0; i < data.length; i++) {
+            var m = data[i];
+            var key = dayMap[m.day];
+            if (key && organized[key]) {
+                organized[key].push(m);
+            }
+        }
+
+        function getMinutes(timeStr) {
+            var match = timeStr.match(/(\d{1,2}):(\d{2})/);
+            if (!match) return 0;
+            return parseInt(match[1]) * 60 + parseInt(match[2]);
+        }
+
+        function getRoomRank(room) {
+            if (!room) return 1000;
+            var upper = room.toUpperCase();
+            if (upper.startsWith('C')) {
+                // C1 -> 101, C10 -> 110
+                return 100 + parseInt(upper.replace('C', '') || 0);
+            }
+            if (upper.startsWith('M')) {
+                // M1 -> 201
+                return 200 + parseInt(upper.replace('M', '').split('-')[0] || 0);
+            }
+            return 900;
+        }
+
+        for (var key in organized) {
+            organized[key].sort(function (a, b) {
+                var rankA = getRoomRank(a.room);
+                var rankB = getRoomRank(b.room);
+                if (rankA !== rankB) {
+                    return rankA - rankB;
+                }
+                return getMinutes(a.time) - getMinutes(b.time);
+            });
+        }
+
+        var satMeetings = organized.saturday;
+        var saturday1 = [];
+        var saturday2 = [];
+
+        for (var i = 0; i < satMeetings.length; i++) {
+            var m = satMeetings[i];
+            var startMin = getMinutes(m.time);
+            if (startMin < 780) { // 13:00 = 780
+                saturday1.push(m);
+            } else {
+                saturday2.push(m);
+            }
+        }
+
+        function renderMeetings(meetings, containerId) {
+            var container = document.getElementById(containerId);
+            for (var i = 0; i < meetings.length; i++) {
+                var m = meetings[i];
+                var div = document.createElement('div');
+                var className = 'lab-item ' + m.type;
+                if (m.isTech) className += ' tech-for-impact';
+                div.className = className;
+
+                var html = '';
+                if (m.room) html += '<div class="room-number">' + m.room + '</div>';
+                html += '<div class="lab-name">' + m.name + '</div>';
+                html += '<div class="lab-info">' + m.location + ' ' + m.time + '</div>';
+                div.innerHTML = html;
+
+                div.onclick = (function (meeting) {
+                    return function () {
+                        document.getElementById('modal-title').textContent = meeting.name;
+                        document.getElementById('modal-subtitle').textContent = meeting.day + '요일';
+                        document.getElementById('modal-leader').textContent = meeting.leader;
+                        document.getElementById('modal-time').textContent = meeting.time;
+                        document.getElementById('modal-location').textContent = meeting.location;
+                        document.getElementById('modal-description').textContent = meeting.description;
+                        document.getElementById('meetingModal').style.display = 'block';
+                    };
+                })(m);
+
+                container.appendChild(div);
+            }
+        }
+
+        renderMeetings(organized.tuesday, 'tuesday-meetings');
+        renderMeetings(organized.wednesday, 'wednesday-meetings');
+        renderMeetings(organized.thursday, 'thursday-meetings');
+        renderMeetings(saturday1, 'saturday1-meetings');
+        renderMeetings(saturday2, 'saturday2-meetings');
+
+        document.getElementsByClassName('close')[0].onclick = function () {
+            document.getElementById('meetingModal').style.display = 'none';
+        };
+
+        window.onclick = function (event) {
+            if (event.target.id === 'meetingModal') {
+                document.getElementById('meetingModal').style.display = 'none';
+            }
+        };
+        // Generate Sakura Petals
+        function createPetals() {
+            var container = document.getElementById('petals-container');
+            var petalCount = 15;
+            for (var i = 0; i < petalCount; i++) {
+                var petal = document.createElement('div');
+                petal.className = 'petal';
+                petal.textContent = '🌸';
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.fontSize = (Math.random() * (1.5 - 0.8) + 0.8) + 'em';
+                petal.style.animationDuration = (Math.random() * (12 - 7) + 7) + 's, ' + (Math.random() * (4 - 2) + 2) + 's';
+                petal.style.animationDelay = (Math.random() * 10) + 's';
+                petal.style.opacity = Math.random() * (1 - 0.4) + 0.4;
+                container.appendChild(petal);
+            }
+        }
+        createPetals();
+    </script>
+</body>
+
+</html>
