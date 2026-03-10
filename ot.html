@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모두의연구소 - Share Value, Grow Together</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #6366F1;
+            --secondary: #EC4899;
+            --ax: #8B5CF6;
+            --dark: #1F2937;
+            --gray: #6B7280;
+            --light: #F9FAFB;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: #FFFFFF;
+            color: #2D3436;
+            overflow-x: hidden;
+        }
+
+        .presentation {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            height: 100vh;
+            scrollbar-width: none;
+        }
+
+        .presentation::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slide {
+            min-width: 100vw;
+            height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 30px;
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            filter: brightness(1) contrast(1);
+            z-index: 0;
+        }
+
+        /* Apple-style Light Pink-White Gradient */
+        .gradient-bg {
+            background: linear-gradient(135deg, #FFF0F5 0%, #FFE4E1 25%, #FFC0CB 50%, #FFB6C1 75%, #FFA6C1 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .slide-dark {
+            background: linear-gradient(180deg, #FAFAFA 0%, #FFF5F7 50%, #FFFFFF 100%);
+        }
+
+        .slide-navy {
+            background: linear-gradient(135deg, #FFF0F5 0%, #FFE4E1 50%, #FFC0CB 100%);
+        }
+
+        .slide-accent {
+            background: linear-gradient(135deg, #FFE4E1 0%, #FFC0CB 50%, #FFB6C1 100%);
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 0.8rem;
+            color: #D73448;
+            font-weight: 600;
+            opacity: 0.7;
+        }
+
+        .logo {
+            width: 220px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.4));
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .slide-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-align: center;
+            letter-spacing: -0.02em;
+            color: #D73448;
+        }
+
+        .slide-subtitle {
+            font-size: 1.3rem;
+            font-weight: 300;
+            opacity: 0.95;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .slide-tagline {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #E85D6C;
+            margin-bottom: 30px;
+        }
+
+        .content-box {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 30px 35px;
+            max-width: 1100px;
+            border: 2px solid rgba(231, 84, 104, 0.15);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .info-item {
+            background: rgba(231, 84, 104, 0.05);
+            padding: 15px 18px;
+            border-radius: 15px;
+            border: 1px solid rgba(231, 84, 104, 0.15);
+            transition: all 0.3s;
+        }
+
+        .info-item:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-3px);
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            opacity: 0.6;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #666;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #D73448;
+        }
+
+        .value-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .value-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(231, 84, 104, 0.15);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            color: #2D3436;
+        }
+
+        .value-list li:before {
+            content: "◆";
+            color: #E85D6C;
+            margin-right: 15px;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .program-card {
+            background: rgba(255,255,255,0.08);
+            padding: 18px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.3s;
+        }
+
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.12);
+        }
+
+        .program-icon {
+            font-size: 1.8rem;
+            margin-bottom: 6px;
+        }
+
+        .program-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #ff6b9d;
+        }
+
+        .program-desc {
+            font-size: 0.8rem;
+            opacity: 0.85;
+            line-height: 1.4;
+        }
+
+        .program-season {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 4px;
+            color: #a855f7;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #E85D6C, #D73448);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 5px;
+            color: #555;
+        }
+
+        /* Animated Counter */
+        .counter {
+            animation: countUp 2s ease-out forwards;
+        }
+
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .community-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .community-card {
+            background: rgba(255,255,255,0.08);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.3s;
+        }
+
+        .community-card:hover {
+            background: rgba(255,255,255,0.12);
+            transform: scale(1.03);
+        }
+
+        .community-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .community-card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ff6b9d;
+        }
+
+        .community-card-desc {
+            font-size: 0.9rem;
+            opacity: 0.75;
+            line-height: 1.5;
+        }
+
+        .strengths-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .strength-item {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 12px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .strength-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ff6b9d;
+            margin-bottom: 6px;
+        }
+
+        .strength-text {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            line-height: 1.3;
+        }
+
+        .contact-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .contact-url {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 20px;
+            border-radius: 40px;
+            margin: 5px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+
+        .contact-url:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.05);
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #ff6b9d, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.08;
+            animation: float 25s infinite ease-in-out;
+        }
+
+        .shape1 {
+            width: 500px;
+            height: 500px;
+            background: #ff6b9d;
+            top: -150px;
+            right: -150px;
+            animation-delay: 0s;
+        }
+
+        .shape2 {
+            width: 350px;
+            height: 350px;
+            background: #6366f1;
+            bottom: -100px;
+            left: -100px;
+            animation-delay: 7s;
+        }
+
+        .shape3 {
+            width: 250px;
+            height: 250px;
+            background: #1e3a8a;
+            top: 40%;
+            left: 5%;
+            animation-delay: 14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(80px, 60px) rotate(90deg); }
+            50% { transform: translate(0, 120px) rotate(180deg); }
+            75% { transform: translate(-80px, 60px) rotate(270deg); }
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* cover-slide adjustments */
+        .cover-slide .slide-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 0; /* no logo padding needed */
+        }
+
+        .lab-list {
+            margin-top: 20px;
+        }
+
+        .lab-item {
+            background: rgba(255,255,255,0.05);
+            padding: 18px 22px;
+            border-radius: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+
+        .lab-item:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateX(5px);
+        }
+
+        .lab-item:before {
+            content: "🔬";
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .faq-item {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 18px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .faq-question {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #ff6b9d;
+            margin-bottom: 6px;
+        }
+
+        .faq-answer {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .nav-hint {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.8);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .team-section {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 15px;
+        }
+
+        .team-member {
+            text-align: center;
+            background: rgba(255,255,255,0.05);
+            padding: 15px 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .team-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ff6b9d;
+        }
+
+        .team-role {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 3px;
+        }
+
+        .svgt-section {
+            background: rgba(0,0,0,0.3);
+            padding: 30px;
+            border-radius: 25px;
+            margin: 20px 0;
+        }
+
+        .svgt-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ff6b9d, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .heritage-box {
+            background: rgba(231, 84, 104, 0.08);
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 25px;
+            border-left: 4px solid #E85D6C;
+        }
+
+        .heritage-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #D73448;
+            margin-bottom: 15px;
+        }
+
+        .glacier-lab {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(30, 58, 138, 0.2));
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 20px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .glacier-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #6366f1;
+            margin-bottom: 15px;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .tag {
+            background: rgba(255,255,255,0.1);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        /* Slide-specific image styling */
+        .slide-image {
+            max-width: 100%;
+            max-height: 35vh;
+            margin: 10px 0;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            object-fit: contain;
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .gallery-item {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .two-column-img {
+            max-width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        @media (max-width: 1200px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 12px 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--gray);
+            background: transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .nav-item:hover {
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .nav-item.active {
+            background: var(--ax);
+            color: var(--white);
+        }
+
+        .nav-item .nav-icon {
+            font-size: 1rem;
+        }
+
+        .nav-item .nav-label {
+            display: none;
+        }
+
+        @media (min-width: 900px) {
+            .nav-item .nav-label {
+                display: inline;
+            }
+        }
+
+        .nav-divider {
+            color: var(--gray);
+            opacity: 0.3;
+            font-size: 0.8rem;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+            background: rgba(255,255,255,0.95);
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .controls button {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background: var(--primary);
+            color: var(--white);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .controls button:hover {
+            transform: scale(1.1);
+        }
+
+        .controls button:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-container {
+            width: 200px;
+            height: 6px;
+            background: var(--light);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .slide-counter {
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: 500;
+            min-width: 60px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-nav" id="topNav">
+        <div class="nav-item" data-slide="1" onclick="goToSlide(1)">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">홈</span>
+        </div>
+        <span class="nav-divider">›</span>
+        <div class="nav-item" data-slide="3" onclick="goToSlide(3)">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">성과</span>
+        </div>
+        <span class="nav-divider">›</span>
+        <div class="nav-item" data-slide="5" onclick="goToSlide(5)">
+            <span class="nav-icon">🧪</span>
+            <span class="nav-label">LAB</span>
+        </div>
+        <span class="nav-divider">›</span>
+        <div class="nav-item" data-slide="9" onclick="goToSlide(9)">
+            <span class="nav-icon">❓</span>
+            <span class="nav-label">FAQ</span>
+        </div>
+    </nav>
+    <div class="presentation">
+        <!-- Slide 1: Cover -->
+        <div class="slide gradient-bg cover-slide">
+            <div class="slide-number">1</div>
+            <div class="floating-shapes">
+                <div class="shape shape1"></div>
+                <div class="shape shape2"></div>
+                <div class="shape shape3"></div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title" style="font-size: 4rem; line-height: 1.2;">모두의연구소</h1>
+                <p class="slide-subtitle" style="font-size: 1.1rem; opacity: 0.9; margin-top: 20px; color: #D73448;">Welcome to MODULABS</p>
+                <p style="font-size: 1.2rem; text-align: center; opacity: 0.75; margin-top: 25px; color: #555; max-width: 700px;">
+                    누구나 지식을 공유하고 함께 성장하는<br>커뮤니티 기반 학습 생태계
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: 기본 정보 -->
+        <div class="slide slide-dark">
+            <div class="slide-number">2</div>
+            <div class="slide-content">
+                <h2 class="slide-title" style="font-size: 2.2rem;">기본 정보</h2>
+                <div class="content-box">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">공식명</div>
+                            <div class="info-value">(주) 모두의연구소</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">설립연도</div>
+                            <div class="info-value">2015년 (10년+</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">대표</div>
+                            <div class="info-value">김승일</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">소재지</div>
+                            <div class="info-value">서울 강남캠퍼스</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">슬로건</div>
+                            <div class="info-value highlight">Share Value, Grow Together</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">웹사이트</div>
+                            <div class="info-value">modulabs.co.kr</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: SVGT 핵심 가치 -->
+        <div class="slide slide-navy">
+            <div class="slide-number">3</div>
+            <div class="slide-content">
+                <h2 class="slide-title" style="font-size: 2.2rem;">핵심 가치: SVGT</h2>
+                <p class="slide-subtitle" style="font-size: 1.1rem;">"경쟁이 아닌 상생의 힘"</p>
+                <div class="two-column" style="margin-top: 15px; max-width: 1100px;">
+                    <div class="content-box" style="background: rgba(255, 255, 255, 0.9);">
+                        <div class="svgt-section">
+                            <div class="svgt-title" style="font-size: 1.3rem;">쉐벨그투 (SVGT)</div>
+                            <p style="text-align: center; font-size: 1rem; margin-bottom: 12px;">
+                                <strong style="color: #ff6b9d;">S</strong>hare <strong style="color: #c44cff;">V</strong>alue, <strong style="color: #6366f1;">G</strong>row <strong style="color: #1e3a8a;">T</strong>ogether
+                            </p>
+                        </div>
+                        <ul class="value-list">
+                            <li><strong>함께 성장하는 문화:</strong> 가르치며 완성하는 집단지성</li>
+                            <li><strong>자율형 커뮤니티:</strong> 관심사를 누구나 마음껏 연구할 수 있는 기회</li>
+                            <li><strong>연구 성장 시스템:</strong> 아이디어가 전문 연구로 진화하는 곳</li>
+                            <li><strong>공식 발표 기회:</strong> 모두팝, 모두콘에서 연구 결과를 세상에 알리는 무대</li>
+                        </ul>
+                    </div>
+                    <img src="모두연-사진/SVGT.png" alt="SVGT" class="two-column-img">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: 모두연 커뮤니티 통계 (애니메이션) -->
+        <div class="slide gradient-bg">
+            <div class="slide-number">4</div>
+            <div class="floating-shapes">
+                <div class="shape shape1"></div>
+                <div class="shape shape2"></div>
+                <div class="shape shape3"></div>
+            </div>
+            <div class="slide-content">
+                <h2 class="slide-title" style="font-size: 2.2rem;">모두연 커뮤니티</h2>
+                <img src="모두연-사진/LAB단체사진.jpg" alt="LAB 단체사진" class="slide-image" style="max-height: 28vh; display: block; margin: 20px auto;">
+                <div class="stat-row">
+                    <div class="stat-item counter" style="animation-delay: 0s;">
+                        <div class="stat-number" data-count="10">0</div>
+                        <div class="stat-label">Years (Since 2015~)</div>
+                    </div>
+                    <div class="stat-item counter" style="animation-delay: 0.3s;">
+                        <div class="stat-number" data-count="123">0</div>
+                        <div class="stat-label">Papers (Top Tier)</div>
+                    </div>
+                    <div class="stat-item counter" style="animation-delay: 0.6s;">
+                        <div class="stat-number" data-count="1072">0</div>
+                        <div class="stat-label">Labs (연구모임)</div>
+                    </div>
+                </div>
+                <div class="heritage-box" style="background: rgba(231, 84, 104, 0.08); border-left-color: #D73448;">
+                    <div class="heritage-title" style="color: #D73448; font-size: 1.1rem;">🏛️ Heritage</div>
+                    <p style="font-size: 0.9rem; line-height: 1.5; color: #555;">
+                        10,000명의 누적 연구자가 함께 쌓아 올린 공유의 역사<br>
+                        위계 없이 연결되는 초밀도 인적 자산<br>
+                        10년의 신뢰가 만든 환대와 공유의 오리지널리티
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: 시즌제 장수 LAB -->
+        <div class="slide slide-dark">
+            <div class="slide-content">
+                <h2 class="slide-title" style="font-size: 2.2rem;">명예의 전당 - 시즌제 LAB</h2>
+                <p class="slide-subtitle" style="font-size: 0.95rem;">지속적으로 운영되는 권위있는 연구 모임</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 1050px; margin-top: 15px;">
+                    <!-- Rank 1 -->
+                    <div style="background: linear-gradient(135deg, rgba(215, 52, 72, 0.1), rgba(232, 93, 108, 0.1)); padding: 18px; border-radius: 15px; border: 2px solid rgba(215, 52, 72, 0.3);">
+                        <div style="display: flex; align-items: flex-start; gap: 12px;">
+                            <div style="background: #D73448; color: white; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.5rem; font-weight: 700; flex-shrink: 0;">1</div>
+                            <div style="flex: 1;">
+                                <div style="color: #D73448; font-weight: 700; font-size: 1.15rem;">DR4R LAB</div>
+                                <div style="background: rgba(215, 52, 72, 0.2); color: #D73448; padding: 4px 8px; border-radius: 8px; margin: 6px 0; font-size: 0.75rem; font-weight: 600; width: fit-content;">SEASON 8</div>
+                                <div style="font-size: 0.85rem; color: #555; margin-top: 4px;">🤖 Physical AI Study</div>
+                                <div style="font-size: 0.75rem; color: #888; margin-top: 2px;">⚙️ 랩장: 박철</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rank 2 -->
+                    <div style="background: linear-gradient(135deg, rgba(232, 93, 108, 0.1), rgba(255, 182, 193, 0.1)); padding: 18px; border-radius: 15px; border: 2px solid rgba(232, 93, 108, 0.3);">
+                        <div style="display: flex; align-items: flex-start; gap: 12px;">
+                            <div style="background: #E85D6C; color: white; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.5rem; font-weight: 700; flex-shrink: 0;">2</div>
+                            <div style="flex: 1;">
+                                <div style="color: #D73448; font-weight: 700; font-size: 1.15rem;">DAO LAB</div>
+                                <div style="background: rgba(232, 93, 108, 0.2); color: #D73448; padding: 4px 8px; border-radius: 8px; margin: 6px 0; font-size: 0.75rem; font-weight: 600; width: fit-content;">SEASON 7</div>
+                                <div style="font-size: 0.85rem; color: #555; margin-top: 4px;">🏛️ 미래 조직 연구</div>
+                                <div style="font-size: 0.75rem; color: #888; margin-top: 2px;">⚙️ 랩장: 한재선</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rank 3 -->
+                    <div style="background: rgba(231, 84, 104, 0.08); padding: 18px; border-radius: 15px; border: 2px solid rgba(231, 84, 104, 0.2);">
+                        <div style="display: flex; align-items: flex-start; gap: 12px;">
+                            <div style="background: #E8A5B5; color: white; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.5rem; font-weight: 700; flex-shrink: 0;">3</div>
+                            <div style="flex: 1;">
+                                <div style="color: #D73448; font-weight: 700; font-size: 1.15rem;">반려로봇 LAB</div>
+                                <div style="background: rgba(231, 84, 104, 0.2); color: #666; padding: 4px 8px; border-radius: 8px; margin: 6px 0; font-size: 0.75rem; font-weight: 600; width: fit-content;">SEASON 4</div>
+                                <div style="font-size: 0.85rem; color: #555; margin-top: 4px;">🐱 퍼스널 로봇 시대</div>
+                                <div style="font-size: 0.75rem; color: #888; margin-top: 2px;">⚙️ 랩장: 현청천</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rank 4 -->
+                    <div style="background: rgba(231, 84, 104, 0.08); padding: 18px; border-radius: 15px; border: 2px solid rgba(231, 84, 104, 0.2);">
+                        <div style="display: flex; align-items: flex-start; gap: 12px;">
+                            <div style="background: #E8A5B5; color: white; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.5rem; font-weight: 700; flex-shrink: 0;">4</div>
+                            <div style="flex: 1;">
+                                <div style="color: #D73448; font-weight: 700; font-size: 1.15rem;">Web3 AI LAB</div>
+                                <div style="background: rgba(231, 84, 104, 0.2); color: #666; padding: 4px 8px; border-radius: 8px; margin: 6px 0; font-size: 0.75rem; font-weight: 600; width: fit-content;">SEASON 3</div>
+                                <div style="font-size: 0.85rem; color: #555; margin-top: 4px;">🔗 탈중앙화 AI 에이전트</div>
+                                <div style="font-size: 0.75rem; color: #888; margin-top: 2px;">⚙️ 랩장: 김민현</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rank 5 -->
+                    <div style="background: rgba(231, 84, 104, 0.08); padding: 18px; border-radius: 15px; border: 2px solid rgba(231, 84, 104, 0.2);">
+                        <div style="display: flex; align-items: flex-start; gap: 12px;">
+                            <div style="background: #E8A5B5; color: white; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.5rem; font-weight: 700; flex-shrink: 0;">5</div>
+                            <div style="flex: 1;">
+                                <div style="color: #D73448; font-weight: 700; font-size: 1.15rem;">쩝쩝 LAB</div>
+                                <div style="background: rgba(231, 84, 104, 0.2); color: #666; padding: 4px 8px; border-radius: 8px; margin: 6px 0; font-size: 0.75rem; font-weight: 600; width: fit-content;">SEASON 3</div>
+                                <div style="font-size: 0.85rem; color: #555; margin-top: 4px;">🍽️ 맛집 추천 시스템</div>
+                                <div style="font-size: 0.75rem; color: #888; margin-top: 2px;">⚙️ 랩장: 김성록</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 12px; background: rgba(215, 52, 72, 0.08); padding: 10px; border-radius: 12px; font-size: 0.85rem; color: #555;">
+                    🎁 무료 공간 + 연구 인프라 (GPU, 구글밋, Gemini 회의록 등) 제공
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Research Growth System & 차별점 -->
+        <div class="slide slide-navy">
+            <div class="slide-number">5</div>
+            <div class="slide-content">
+                <h2 class="slide-title" style="font-size: 2.2rem;">모두연 활동 10원칙</h2>
+                <div class="two-column" style="margin-top: 15px; max-width: 1100px; gap: 20px;">
+                    <div class="content-box" style="background: rgba(255, 255, 255, 0.9);">
+                        <div style="margin-bottom: 15px;">
+                            <h3 style="font-size: 1.2rem; color: #ff6b9d; margin-bottom: 8px;">Research Growth System</h3>
+                            <p style="opacity: 0.9; font-size: 0.85rem;">연구부터 발표까지 이어지는 성장 트랙</p>
+                        </div>
+                        <ul class="value-list" style="font-size: 1rem;">
+                            <li><strong>가장 최신의 테크 연구모임</strong></li>
+                            <li><strong>논문 지원 제도</strong> - 아이디어가 전문 연구로</li>
+                            <li><strong>공식 발표 기회</strong> - 모두팝, 모두콘</li>
+                            <li><strong>타겟팅된 기술 홍보의 장</strong></li>
+                            <li><strong>경계 없는 융합 네트워크</strong></li>
+                        </ul>
+                    </div>
+                    <img src="모두연-사진/모두연활동10원칙.jpg" alt="모두연 활동 10원칙" class="two-column-img">
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Slide 6: 활동 & FAQ -->
+        <div class="slide slide-accent">
+            <div class="slide-number">6</div>
+            <div class="floating-shapes">
+                <div class="shape shape1"></div>
+                <div class="shape shape2"></div>
+                <div class="shape shape3"></div>
+            </div>
+            <div class="slide-content">
+                <h2 class="slide-title" style="font-size: 2.2rem;">활동 & 자주 묻는 질문</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1050px; margin-top: 12px; align-items: start;">
+                    <!-- Left: Images -->
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                            <img src="모두연-사진/모두팝Modupop.jpg" alt="모두팝 이벤트" style="width: 100%; height: 200px; object-fit: cover;">
+                            <div style="padding: 10px; background: rgba(215, 52, 72, 0.15); text-align: center; font-size: 0.8rem; color: #555;">🎤 모두팝 (MODUPOP)</div>
+                        </div>
+                        <div style="border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                            <img src="모두연-사진/모두팝 유튜브 녹화사진.jpg" alt="모두팝 유튜브" style="width: 100%; height: 200px; object-fit: cover;">
+                            <div style="padding: 10px; background: rgba(215, 52, 72, 0.15); text-align: center; font-size: 0.8rem; color: #555;">📹 유튜브 세미나</div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right: FAQ -->
+                    <div class="content-box" style="background: rgba(255, 255, 255, 0.9); border: 2px solid rgba(215, 52, 72, 0.2); padding: 20px;">
+                        <h3 style="text-align: center; font-size: 1rem; margin-bottom: 12px; color: #D73448; font-weight: 700;">자주 묻는 질문 Top 3</h3>
+                        <div class="faq-item" style="background: rgba(215, 52, 72, 0.05); margin-bottom: 8px;">
+                            <div class="faq-question" style="color: #D73448; font-size: 0.9rem;">Q. 커피가 정말 무료인가요? ☕</div>
+                            <div class="faq-answer" style="color: #555; font-size: 0.8rem;">
+                                네! 아메리카노와 <strong>인생네컷도 무료</strong>입니다.
+                            </div>
+                        </div>
+                        <div class="faq-item" style="background: rgba(215, 52, 72, 0.05); margin-bottom: 8px;">
+                            <div class="faq-question" style="color: #D73448; font-size: 0.9rem;">Q. 공간 대관이 가능한가요? 🏠</div>
+                            <div class="faq-answer" style="color: #555; font-size: 0.8rem;">
+                                <strong>LAB 개설</strong>로 무료 공간 + 인프라를 제공받을 수 있습니다.
+                            </div>
+                        </div>
+                        <div class="faq-item" style="background: rgba(215, 52, 72, 0.05);">
+                            <div class="faq-question" style="color: #D73448; font-size: 0.9rem;">Q. 수익 구조는? 💰</div>
+                            <div class="faq-answer" style="color: #555; font-size: 0.8rem;">
+                                AI 교육이 핵심입니다.<br><br>
+                                1️⃣ <strong>아이펠(AIFFEL) 부트캠프</strong> 👉 6개월 몰입형 AI 실무 교육 (주요 수익원)<br>
+                                AI 엔지니어 과정: 실습 중심, 자기주도 학습<br>
+                                AI 리서처 과정: 연구·논문 중심 트랙<br>
+                                입문~중급 및 연구 지향자 대상 집중형 고가 장기 과정<br>
+                                ✔ 취업·연구 트랙 중심 핵심 프로그램<br><br>
+                                2️⃣ <strong>액티브러닝 캠프</strong> 👉 직장인을 위한 퇴근 후 AI 실무 과정<br>
+                                LLM 서비스 개발, AI 데이터 분석, 바이브코딩(기획/개발)<br>
+                                참여형(Active Learning) 방식<br>
+                                ✔ 재직자 대상 중기 과정 수익 모델<br><br>
+                                3️⃣ <strong>온라인 클래스 (모두연 클래스)</strong> 👉 자율 수강형 온라인 강의<br>
+                                왕초보 Python·통계, AI 활용·자동화·웹 개발, ChatGPT 활용 등 실무 스킬<br>
+                                ✔ 상시 판매 가능한 온라인 매출<br><br>
+                                4️⃣ <strong>기업교육 프로그램 (B2B)</strong> 👉 기업 맞춤형 AI·DT 교육<br>
+                                기업 니즈 맞춤 설계, 온사이트/원격 교육, AX(디지털 전환) 대비 교육<br>
+                                ✔ 기업 계약 기반 고단가 매출<br><br>
+                                🎯 <strong>한 줄 정리</strong>: 개인 대상 교육 + 직장인 과정 + 온라인 강의 + 기업 맞춤 교육 → 교육 프로그램이 핵심 수익 구조입니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 성과 및 통계 -->
+        <div class="slide gradient-bg">
+            <div class="slide-number">7</div>
+            <div class="slide-content">
+                <h2 class="slide-title" style="font-size: 2.2rem;">🏆 성과 & 영향력</h2>
+                <div class="content-box">
+                    <div style="margin-bottom: 15px;">
+                        <h3 style="text-align: center; font-size: 1rem; margin-bottom: 10px; color: #D73448;">📚 교육 성과</h3>
+                        <div class="stat-row" style="gap: 30px;">
+                            <div class="stat-item">
+                                <div class="stat-number" style="font-size: 2.5rem;">10+</div>
+                                <div class="stat-label" style="color: #555;">년 경력</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" style="font-size: 2.5rem;">1000+</div>
+                                <div class="stat-label" style="color: #555;">누적 수료자</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" style="font-size: 2.5rem;">10K+</div>
+                                <div class="stat-label" style="color: #555;">누적 연구원</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin: 12px 0; padding: 10px; border-top: 2px solid rgba(215, 52, 72, 0.15); border-bottom: 2px solid rgba(215, 52, 72, 0.15);">
+                        <h3 style="font-size: 0.95rem; margin-bottom: 8px; color: #D73448;">📖 연구 성과</h3>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                            <div style="text-align: center; padding: 10px; background: rgba(215, 52, 72, 0.08); border-radius: 10px;">
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #D73448;">123+</div>
+                                <div style="opacity: 0.8; font-size: 0.75rem; color: #555;">탑티어 논문</div>
+                            </div>
+                            <div style="text-align: center; padding: 10px; background: rgba(215, 52, 72, 0.08); border-radius: 10px;">
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #E85D6C;">1,072</div>
+                                <div style="opacity: 0.8; font-size: 0.75rem; color: #555;">연구 모임</div>
+                            </div>
+                            <div style="text-align: center; padding: 10px; background: rgba(215, 52, 72, 0.08); border-radius: 10px;">
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #D73448;">10</div>
+                                <div style="opacity: 0.8; font-size: 0.75rem; color: #555;">년 운영</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 10px;">
+                        <h3 style="font-size: 0.9rem; margin-bottom: 6px; color: #D73448;">🌍 논문 게재 학회</h3>
+                        <div class="tag-container" style="justify-content: flex-start;">
+                            <span class="tag" style="background: rgba(215, 52, 72, 0.1); color: #555; border: 1px solid rgba(215, 52, 72, 0.2);">NeurIPS</span>
+                            <span class="tag" style="background: rgba(215, 52, 72, 0.1); color: #555; border: 1px solid rgba(215, 52, 72, 0.2);">ICLR</span>
+                            <span class="tag" style="background: rgba(215, 52, 72, 0.1); color: #555; border: 1px solid rgba(215, 52, 72, 0.2);">ICML</span>
+                            <span class="tag" style="background: rgba(215, 52, 72, 0.1); color: #555; border: 1px solid rgba(215, 52, 72, 0.2);">AAAI</span>
+                            <span class="tag" style="background: rgba(215, 52, 72, 0.1); color: #555; border: 1px solid rgba(215, 52, 72, 0.2);">CVPR</span>
+                            <span class="tag" style="background: rgba(215, 52, 72, 0.1); color: #555; border: 1px solid rgba(215, 52, 72, 0.2);">ACL</span>
+                            <span class="tag" style="background: rgba(215, 52, 72, 0.1); color: #555; border: 1px solid rgba(215, 52, 72, 0.2);">NAACL</span>
+                            <span class="tag" style="background: rgba(215, 52, 72, 0.1); color: #555; border: 1px solid rgba(215, 52, 72, 0.2);">EMNLP</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 10px;">
+                        <h3 style="font-size: 0.9rem; margin-bottom: 6px; color: #D73448;">🎯 커뮤니티 활동</h3>
+                        <div class="tag-container" style="justify-content: flex-start;">
+                            <span class="tag" style="background: rgba(215, 52, 72, 0.1); color: #555; border: 1px solid rgba(215, 52, 72, 0.2);">🎤 모두팝</span>
+                            <span class="tag" style="background: rgba(215, 52, 72, 0.1); color: #555; border: 1px solid rgba(215, 52, 72, 0.2);">🎉 모두콘</span>
+                            <span class="tag" style="background: rgba(215, 52, 72, 0.1); color: #555; border: 1px solid rgba(215, 52, 72, 0.2);">👥 모두모임</span>
+                            <span class="tag" style="background: rgba(215, 52, 72, 0.1); color: #555; border: 1px solid rgba(215, 52, 72, 0.2);">📧 모두레터</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: 모두의연구소와 함께 -->
+        <div class="slide gradient-bg">
+            <div class="slide-number">8</div>
+            <div class="floating-shapes">
+                <div class="shape shape1"></div>
+                <div class="shape shape2"></div>
+                <div class="shape shape3"></div>
+            </div>
+            <div class="slide-content">
+                <div style="margin-bottom: 20px;">
+                    <h2 class="slide-title" style="font-size: 2.2rem; color: #D73448;">모두의연구소</h2>
+                    <p style="font-size: 1.05rem; color: #555; margin-top: 8px;">AI 연구를 사랑하는 모두를 위한 연구 공간</p>
+                </div>
+                
+                <div class="content-box">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <p style="font-size: 1.15rem; font-weight: 600; color: #D73448; margin-bottom: 8px;"><strong>Share Value, Grow Together</strong></p>
+                        <p style="font-size: 0.95rem; color: #555; line-height: 1.5;">누구나 지식을 공유하고 함께 성장하는<br>AI 커뮤니티</p>
+                    </div>
+
+                    <div style="margin: 15px 0; padding: 12px 0; border-top: 2px solid rgba(215, 52, 72, 0.15); border-bottom: 2px solid rgba(215, 52, 72, 0.15);">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #D73448;">2015</div>
+                                <div style="font-size: 0.85rem; color: #555;">설립</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #E85D6C;">10K+</div>
+                                <div style="font-size: 0.85rem; color: #555;">누적 연구원</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 15px;">
+                        <h3 style="font-size: 0.9rem; margin-bottom: 8px; color: #D73448; text-align: center;">🔗 연결하기</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <a href="https://modulabs.co.kr" style="text-decoration: none; background: rgba(215, 52, 72, 0.08); padding: 10px; border-radius: 8px; border: 1px solid rgba(215, 52, 72, 0.2); text-align: center;">
+                                <div style="font-size: 0.9rem; font-weight: 600; color: #D73448;">🌐 웹사이트</div>
+                                <div style="font-size: 0.7rem; color: #555; margin-top: 2px;">modulabs.co.kr</div>
+                            </a>
+                            <a href="https://aiffel.io" style="text-decoration: none; background: rgba(232, 93, 108, 0.08); padding: 10px; border-radius: 8px; border: 1px solid rgba(232, 93, 108, 0.2); text-align: center;">
+                                <div style="font-size: 0.9rem; font-weight: 600; color: #E85D6C;">🎓 교육</div>
+                                <div style="font-size: 0.7rem; color: #555; margin-top: 2px;">AIFFEL</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 12px; text-align: center; padding: 10px; background: rgba(215, 52, 72, 0.05); border-radius: 8px;">
+                        <p style="font-size: 0.85rem; color: #555; margin: 0;">📍 서울 강남캠퍼스</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="controls">
+        <button class="prev" onclick="prevSlide()" aria-label="이전 슬라이드">◀</button>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+        <span class="slide-counter" id="counter">1 / 10</span>
+        <button class="next" onclick="nextSlide()" aria-label="다음 슬라이드">▶</button>
+    </nav>
+
+    <script>
+        // Counter animation function
+        function animateCounter(element, target) {
+            const duration = 2000; // 2 seconds
+            const start = parseInt(element.textContent);
+            const increment = target / (duration / 16); // 60fps
+            let current = start;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 16);
+        }
+
+        // Intersection Observer for counter animation
+        const observerOptions = { threshold: 0.5 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumbers = entry.target.querySelectorAll('[data-count]');
+                    statNumbers.forEach(num => {
+                        const target = parseInt(num.dataset.count);
+                        animateCounter(num, target);
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Find slide 4 and observe it
+        const slides = document.querySelectorAll('.slide');
+        if (slides.length > 3) {
+            observer.observe(slides[3]); // Slide 4 (0-indexed)
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const presentation = document.querySelector('.presentation');
+            const scrollAmount = window.innerWidth;
+
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                presentation.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            } else if (e.key === 'ArrowLeft') {
+                presentation.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            }
+        });
+
+        // Touch drag support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const presentation = document.querySelector('.presentation');
+            const scrollAmount = window.innerWidth;
+            const swipeThreshold = 50;
+
+            if (touchStartX - touchEndX > swipeThreshold) {
+                presentation.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            } else if (touchEndX - touchStartX > swipeThreshold) {
+                presentation.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            }
+        }
+
+        // navigation helpers
+        function prevSlide() {
+            const presentation = document.querySelector('.presentation');
+            presentation.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
+        }
+        function nextSlide() {
+            const presentation = document.querySelector('.presentation');
+            presentation.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
+        }
+        function goToSlide(n) {
+            const presentation = document.querySelector('.presentation');
+            presentation.scrollTo({ left: (n - 1) * window.innerWidth, behavior: 'smooth' });
+        }
+        function updateNavigationUI() {
+            const presentation = document.querySelector('.presentation');
+            const slides = document.querySelectorAll('.slide');
+            const current = Math.round(presentation.scrollLeft / window.innerWidth) + 1;
+            document.getElementById('counter').textContent = `${current} / ${slides.length}`;
+            const progress = ((current - 1) / (slides.length - 1)) * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+            document.querySelectorAll('.nav-item').forEach(item => {
+                const slideNum = parseInt(item.dataset.slide);
+                if (slideNum === current) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+        }
+        const presentationEl = document.querySelector('.presentation');
+        presentationEl.addEventListener('scroll', updateNavigationUI);
+        // initialize
+        updateNavigationUI();
+    </script>
+</body>
+</html>
